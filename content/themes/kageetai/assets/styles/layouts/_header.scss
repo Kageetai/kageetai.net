@@ -1,0 +1,10 @@
+.banner {
+  background-color: $header-background-color;
+  color:            white;
+
+  .brand {
+    color:       white;
+    font-size:   2.5em;
+    font-family: $headings-font-family;
+  }
+}
