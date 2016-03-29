@@ -22,6 +22,6 @@
     }
   },
   "config": {
-    "devUrl": "http://localhost/kageetai/"
+    "devUrl": "http://localhost/wordpress/"
   }
 }
