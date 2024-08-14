@@ -20,7 +20,7 @@
     "format": "npx prettier . --write",
     "test": "tsx ./quartz/util/path.test.ts && tsx ./quartz/depgraph.test.ts",
     "profile": "0x -D prof ./quartz/bootstrap-cli.mjs build --concurrency=1",
-    "lint": "npx markdownlint '**/*.md' && npx prettier . --check"
+    "lint": "npx markdownlint --ignore node_modules '**/*.md' && npx prettier . --check"
   },
   "engines": {
     "npm": ">=9.3.1",
@@ -106,6 +106,7 @@
     "@types/ws": "^8.5.10",
     "@types/yargs": "^17.0.32",
     "esbuild": "^0.19.9",
+    "markdownlint-cli": "^0.41.0",
     "prettier": "^3.3.2",
     "tsx": "^4.11.0",
     "typescript": "^5.4.5"
