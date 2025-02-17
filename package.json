@@ -102,23 +102,23 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.17.0",
+    "@eslint/js": "^9.20.0",
     "@types/cli-spinner": "^0.2.3",
     "@types/d3": "^7.4.3",
     "@types/eslint__js": "^8.42.3",
     "@types/hast": "^3.0.4",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.13.4",
     "@types/pretty-time": "^1.1.5",
     "@types/source-map-support": "^0.5.10",
-    "@types/ws": "^8.5.13",
+    "@types/ws": "^8.5.14",
     "@types/yargs": "^17.0.33",
-    "esbuild": "^0.24.0",
-    "eslint": "^9.17.0",
-    "globals": "^15.9.0",
-    "prettier": "^3.4.2",
+    "esbuild": "^0.25.0",
+    "eslint": "^9.20.1",
+    "globals": "^15.15.0",
+    "prettier": "^3.5.1",
     "tsx": "^4.19.2",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.18.1"
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0"
   }
 }
