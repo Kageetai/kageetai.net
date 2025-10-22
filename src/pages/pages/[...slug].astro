@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
   const pages = await getCollection('pages');
@@ -13,25 +14,16 @@ const { page } = Astro.props;
 const { Content } = await render(page);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{page.data.title || page.id} | Kageetai.net</title>
-  </head>
-  <body>
-    <nav>
-      <a href="/">← Back to home</a>
-    </nav>
+<BaseLayout title={page.data.title || page.id}>
+  <nav>
+    <a href="/">← Back to home</a>
+  </nav>
 
-    <article>
-      <header>
-        <h1>{page.data.title || page.id}</h1>
-      </header>
+  <article>
+    <header>
+      <h1>{page.data.title || page.id}</h1>
+    </header>
 
-      <Content />
-    </article>
-  </body>
-</html>
+    <Content />
+  </article>
+</BaseLayout>
