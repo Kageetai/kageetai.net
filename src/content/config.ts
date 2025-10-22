@@ -1,10 +1,42 @@
 import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { glob, type ParseDataOptions } from 'astro/loaders';
+
+// Helper function to generate title from filename
+const generateTitleFromFilename = (entry: string): string => {
+  const fileName = entry.split('/').pop()?.replace(/\.mdx?$/, '') || '';
+  return fileName
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
+// Custom glob loader that adds title from filename if missing
+function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
+  const loader = glob(options);
+  const originalLoad = loader.load;
+
+  loader.load = async ({ parseData, ...rest }) =>
+    originalLoad({
+      parseData: async (entry: ParseDataOptions<any>) => {
+        // Add title from filename if not present
+        if (!entry.data.title && entry.id) {
+          entry.data.title = generateTitleFromFilename(entry.id);
+        }
+        return parseData(entry);
+      },
+      ...rest
+    });
+
+  return loader;
+}
 
 const games = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './content/Games' }),
+  loader: globWithTitleFallback({
+    pattern: '**/*.md',
+    base: './content/Games',
+  }),
   schema: z.object({
-    title: z.string().optional(),
+    title: z.string(),
     created: z.string(),
     changed: z.string(),
     publish: z.boolean(),
@@ -13,9 +45,12 @@ const games = defineCollection({
 });
 
 const projects = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './content/Projects' }),
+  loader: globWithTitleFallback({
+    pattern: '**/*.md',
+    base: './content/Projects',
+  }),
   schema: z.object({
-    title: z.string().optional(),
+    title: z.string(),
     created: z.string(),
     changed: z.string(),
     publish: z.boolean(),
@@ -26,9 +61,12 @@ const projects = defineCollection({
 });
 
 const content = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './content' }),
+  loader: globWithTitleFallback({
+    pattern: '**/*.md',
+    base: './content',
+  }),
   schema: z.object({
-    title: z.string().optional(),
+    title: z.string(),
     created: z.string(),
     changed: z.string(),
     publish: z.boolean(),

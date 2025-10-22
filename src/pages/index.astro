@@ -18,11 +18,14 @@ const content = await getCollection("content");
     <h2>My posts</h2>
     <ul>
       {
-        content.map((post) => (
-          <li>
-            <a href={`/${post.id}`}>{post.id}</a>
-          </li>
-        ))
+        content.map((post) => {
+          console.log(post);
+          return (
+            <li>
+              <a href={`/${post.id}`}>{post.data.title}</a>
+            </li>
+          );
+        })
       }
     </ul>
   </body>
