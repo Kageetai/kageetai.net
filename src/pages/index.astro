@@ -1,27 +1,29 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 
-const posts = (await getCollection('games'));
-
-console.log('posts', posts)
+const content = await getCollection("content");
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Kageetai.net</title>
-	</head>
-	<body>
-		<h1>Kageetai.net</h1>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Kageetai.net</title>
+  </head>
+  <body>
+    <h1>Kageetai.net</h1>
 
-        <h2>My posts</h2>
-        <ul>
-            {posts.map(post => (
-                    <li><a href={`/games/${post.id}`}>{post.data.title || post.id}</a></li>
-            ))}
-        </ul>
-	</body>
+    <h2>My posts</h2>
+    <ul>
+      {
+        content.map((post) => (
+          <li>
+            <a href={`/${post.id}`}>{post.id}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </body>
 </html>

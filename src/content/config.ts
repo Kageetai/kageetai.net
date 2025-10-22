@@ -25,8 +25,8 @@ const projects = defineCollection({
   }),
 });
 
-const pages = defineCollection({
-  loader: glob({ pattern: 'index.md', base: './content' }),
+const content = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './content' }),
   schema: z.object({
     title: z.string().optional(),
     created: z.string(),
@@ -38,5 +38,5 @@ const pages = defineCollection({
 export const collections = {
   games,
   projects,
-  pages,
+  content,
 };

@@ -24,29 +24,37 @@ const { title, description, created, changed } = Astro.props;
     </nav>
 
     <article>
+      <header>
+        <h1>{title}</h1>
 
-    <header>
-      <h1>{title}</h1>
-
-      <aside class="meta">
-        <ul>
-          <time datetime={created}>Created: {new Date(created).toLocaleDateString()}</time>
-            {changed && (
-                <time datetime={changed}>Updated: {new Date(changed).toLocaleDateString()}</time>
-            )}
-        </ul>
-      </aside>
-    </header>
+        <aside class="meta">
+          <ul>
+            <li>
+              <time datetime={created}
+                >Created: {new Date(created).toLocaleDateString()}</time
+              >
+            </li>
+            <li>
+              {
+                changed && (
+                  <time datetime={changed}>
+                    Changed: {new Date(changed).toLocaleDateString()}
+                  </time>
+                )
+              }
+            </li>
+          </ul>
+        </aside>
+      </header>
     </article>
-
 
     <slot />
   </body>
 </html>
 
 <style is:global>
-    img {
-        max-width: 100%;
-        height: auto;
-    }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 </style>
