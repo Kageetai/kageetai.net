@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import Article from '../../layouts/Article.astro';
 
 export async function getStaticPaths() {
   const games = await getCollection('games');
@@ -14,26 +14,12 @@ const { game } = Astro.props;
 const { Content } = await render(game);
 ---
 
-<BaseLayout title={game.data.title || game.id}>
-  <article>
-    <header>
-      <h1>{game.data.title || game.id}</h1>
-      <aside class="meta">
-        <ul>
-          <time datetime={game.data.created}>Created: {new Date(game.data.created).toLocaleDateString()}</time>
-        {game.data.changed && (
-          <time datetime={game.data.changed}>Updated: {new Date(game.data.changed).toLocaleDateString()}</time>
-        )}
-        </ul>
-      </aside>
-    </header>
+<Article title={game.data.title || game.id} created={game.data.created} changed={game.data.changed}>
+  <Content />
 
-    <Content />
-
-    {game.data.related && (
-      <footer>
-        <p>Related: {game.data.related}</p>
-      </footer>
-    )}
-  </article>
-</BaseLayout>
+  {game.data.related && (
+    <footer>
+      <p>Related: {game.data.related}</p>
+    </footer>
+  )}
+</Article>

@@ -2,9 +2,11 @@
 interface Props {
   title: string;
   description?: string;
+  created?: string;
+  changed?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, created, changed } = Astro.props;
 ---
 
 <html lang="en">
@@ -20,6 +22,23 @@ const { title, description } = Astro.props;
     <nav>
       <a href="/">← Back</a>
     </nav>
+
+    <article>
+
+    <header>
+      <h1>{title}</h1>
+
+      <aside class="meta">
+        <ul>
+          <time datetime={created}>Created: {new Date(created).toLocaleDateString()}</time>
+            {changed && (
+                <time datetime={changed}>Updated: {new Date(changed).toLocaleDateString()}</time>
+            )}
+        </ul>
+      </aside>
+    </header>
+    </article>
+
 
     <slot />
   </body>

@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import Article from '../../layouts/Article.astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -14,26 +14,6 @@ const { project } = Astro.props;
 const { Content } = await render(project);
 ---
 
-<BaseLayout title={project.data.title || project.id} description={project.data.summary}>
-  <article>
-    <header>
-      <h1>{project.data.title || project.id}</h1>
-
-      {project.data.summary && (
-        <p class="summary">{project.data.summary}</p>
-      )}
-
-      <div class="meta">
-        <time datetime={project.data.created}>Created: {new Date(project.data.created).toLocaleDateString()}</time>
-        {project.data.changed && (
-          <time datetime={project.data.changed}>Updated: {new Date(project.data.changed).toLocaleDateString()}</time>
-        )}
-        {project.data.url && (
-          <a href={project.data.url} target="_blank" rel="noopener noreferrer">View Project →</a>
-        )}
-      </div>
-    </header>
-
-    <Content />
-  </article>
-</BaseLayout>
+<Article title={project.data.title || project.id} description={project.data.summary} created={project.data.created} changed={project.data.changed}>
+  <Content />
+</Article>
