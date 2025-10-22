@@ -1,0 +1,31 @@
+---
+import { getCollection, render } from "astro:content";
+import Article from "../../layouts/Article.astro";
+
+export async function getStaticPaths() {
+  const games = await getCollection("games");
+  return games.map((game) => ({
+    params: { slug: game.id },
+    props: { game },
+  }));
+}
+
+const { game } = Astro.props;
+const { Content } = await render(game);
+---
+
+<Article
+  title={game.data.title || game.id}
+  created={game.data.created}
+  changed={game.data.changed}
+>
+  <Content />
+
+  {
+    game.data.related && (
+      <footer>
+        <p>Related: {game.data.related}</p>
+      </footer>
+    )
+  }
+</Article>
