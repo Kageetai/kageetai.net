@@ -15,19 +15,17 @@ const { Content } = await render(game);
 ---
 
 <BaseLayout title={game.data.title || game.id}>
-  <nav>
-    <a href="/">← Back to home</a>
-  </nav>
-
   <article>
     <header>
       <h1>{game.data.title || game.id}</h1>
-      <div class="meta">
-        <time datetime={game.data.created}>Created: {new Date(game.data.created).toLocaleDateString()}</time>
+      <aside class="meta">
+        <ul>
+          <time datetime={game.data.created}>Created: {new Date(game.data.created).toLocaleDateString()}</time>
         {game.data.changed && (
           <time datetime={game.data.changed}>Updated: {new Date(game.data.changed).toLocaleDateString()}</time>
         )}
-      </div>
+        </ul>
+      </aside>
     </header>
 
     <Content />

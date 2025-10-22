@@ -15,10 +15,6 @@ const { Content } = await render(page);
 ---
 
 <BaseLayout title={page.data.title || page.id}>
-  <nav>
-    <a href="/">← Back to home</a>
-  </nav>
-
   <article>
     <header>
       <h1>{page.data.title || page.id}</h1>
