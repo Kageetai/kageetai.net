@@ -84,7 +84,7 @@ For the colour of each gradient I used the [`hsl` colour format](https://develop
   
 All of this results in a background like this:  
   
-![Scrolling Gradient-20240602210521157.webp](./attachments/scrolling-gradient-20240602210521157.webp)  
+![Scrolling Gradient-20240602210521157.webp](./attachments/Scrolling%20Gradient-20240602210521157.webp)  
   
 ### Animation  
   
@@ -254,7 +254,7 @@ The end result looks like this:
 An important consideration with new technologies like these, is of course how it affects performance in the browser and especially mobile devices.  
 Luckily, a simple performance test can be quickly done in the [Chrome Dev Tools via the "Frame Rendering Stats"](https://devtoolstips.org/tips/en/display-current-framerate/#:~:text=In%20Chromium%2Dbased%20browsers%2C%20such,Press%20Enter%20.):  
   
-![120 FPS on MacBook Pro M1](./attachments/scrolling-gradient-20240623225511076.webp)![~80 FPS on Pixel 5](./attachments/scrolling-gradient-20240623225250757.webp)  
+![120 FPS on MacBook Pro M1](./attachments/Scrolling%20Gradient-20240623225511076.webp)![~80 FPS on Pixel 5](./attachments/Scrolling%20Gradient-20240623225250757.webp)  
   
 As you can see it could be better on my slightly dated mobile device (second image), but generally, I would consider performance good, for a simple example like this. Of course, as always test your app in a real-life situation, if you wanna use a more complex effect like this. Animations are a complicated topic, and especially bad performance can make them look very bad, or worst case even have side effects for some users.  
 Therefore, it's usually good to check for the `prefers-reduced-motion` flag via a media query, but for an experiment testing a specific animation like this, the animation is kind of the whole point.  
@@ -267,7 +267,7 @@ A good article giving tips how to debug rendering performance of your app, can b
 Of course, for new features like these, it's important to keep in mind whether they are already supported widely or not yet. As already mentioned above, the wonderful [Baseline project](https://web.dev/baseline), shows a lot of useful information about that.  
 The main feature I am testing with this experiment is the `scroll-timeline`, which has the following compatibility data (from [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-timeline#browser_compatibility) as of writing):  
   
-![Scrolling Gradient-20240610174249691.webp](./attachments/scrolling-gradient-20240610174249691.webp)  
+![Scrolling Gradient-20240610174249691.webp](./attachments/Scrolling%20Gradient-20240610174249691.webp)  
   
 One more feature that's not widely available yet, is the `@property` custom property definitions, which is also not in Firefox yet.  
 But with either these two missing for Firefox, it will degrade nicely to the default animation.  
