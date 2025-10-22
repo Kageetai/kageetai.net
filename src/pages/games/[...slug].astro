@@ -1,0 +1,49 @@
+---
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const games = await getCollection('games');
+  return games.map(game => ({
+    params: { slug: game.id },
+    props: { game },
+  }));
+}
+
+const { game } = Astro.props;
+const { Content } = await render(game);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{game.data.title || game.id} | Kageetai.net</title>
+  </head>
+  <body>
+    <nav>
+      <a href="/">← Back to home</a>
+    </nav>
+
+    <article>
+      <header>
+        <h1>{game.data.title || game.id}</h1>
+        <div class="meta">
+          <time datetime={game.data.created}>Created: {new Date(game.data.created).toLocaleDateString()}</time>
+          {game.data.changed && (
+            <time datetime={game.data.changed}>Updated: {new Date(game.data.changed).toLocaleDateString()}</time>
+          )}
+        </div>
+      </header>
+
+      <Content />
+
+      {game.data.related && (
+        <footer>
+          <p>Related: {game.data.related}</p>
+        </footer>
+      )}
+    </article>
+  </body>
+</html>
