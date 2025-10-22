@@ -4,7 +4,8 @@ import { glob, type ParseDataOptions } from 'astro/loaders';
 // Helper function to generate title from filename
 const generateTitleFromFilename = (entry: string): string => {
   const fileName = entry.split('/').pop()?.replace(/\.mdx?$/, '') || '';
-  return fileName
+  const cleanedFileName = fileName.replace(/-+/g, ' ').replace(/^-+|-+$/g, '');
+  return cleanedFileName
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
@@ -17,10 +18,11 @@ function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
 
   loader.load = async ({ parseData, ...rest }) =>
     originalLoad({
-      parseData: async (entry: ParseDataOptions<any>) => {
+      parseData: async <TData extends Record<string, unknown>>(entry: ParseDataOptions<TData>) => {
         // Add title from filename if not present
-        if (!entry.data.title && entry.id) {
-          entry.data.title = generateTitleFromFilename(entry.id);
+        const data = entry.data as Record<string, unknown>;
+        if (!data.title && entry.id) {
+          data.title = generateTitleFromFilename(entry.id);
         }
         return parseData(entry);
       },
