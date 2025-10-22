@@ -1,15 +1,9 @@
-import { defineCollection, z } from 'astro:content';
-import { glob, type ParseDataOptions } from 'astro/loaders';
+import { defineCollection, z } from "astro:content";
+import { glob, type ParseDataOptions } from "astro/loaders";
 
 // Helper function to generate title from filename
-const generateTitleFromFilename = (entry: string): string => {
-  const fileName = entry.split('/').pop()?.replace(/\.mdx?$/, '') || '';
-  const cleanedFileName = fileName.replace(/-+/g, ' ').replace(/^-+|-+$/g, '');
-  return cleanedFileName
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-};
+const generateTitleFromFilename = (path?: string) =>
+  path?.split("/").pop()?.replace(".md", "");
 
 // Custom glob loader that adds title from filename if missing
 function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
@@ -18,15 +12,17 @@ function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
 
   loader.load = async ({ parseData, ...rest }) =>
     originalLoad({
-      parseData: async <TData extends Record<string, unknown>>(entry: ParseDataOptions<TData>) => {
+      parseData: async <TData extends Record<string, unknown>>(
+        entry: ParseDataOptions<TData>,
+      ) => {
         // Add title from filename if not present
         const data = entry.data as Record<string, unknown>;
         if (!data.title && entry.id) {
-          data.title = generateTitleFromFilename(entry.id);
+          data.title = generateTitleFromFilename(entry.filePath);
         }
         return parseData(entry);
       },
-      ...rest
+      ...rest,
     });
 
   return loader;
@@ -34,8 +30,8 @@ function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
 
 const games = defineCollection({
   loader: globWithTitleFallback({
-    pattern: '**/*.md',
-    base: './content/Games',
+    pattern: "**/*.md",
+    base: "./content/Games",
   }),
   schema: z.object({
     title: z.string(),
@@ -48,8 +44,8 @@ const games = defineCollection({
 
 const projects = defineCollection({
   loader: globWithTitleFallback({
-    pattern: '**/*.md',
-    base: './content/Projects',
+    pattern: "**/*.md",
+    base: "./content/Projects",
   }),
   schema: z.object({
     title: z.string(),
@@ -64,8 +60,8 @@ const projects = defineCollection({
 
 const content = defineCollection({
   loader: globWithTitleFallback({
-    pattern: '**/*.md',
-    base: './content',
+    pattern: "**/*.md",
+    base: "./content",
   }),
   schema: z.object({
     title: z.string(),
