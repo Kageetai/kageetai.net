@@ -17,7 +17,7 @@ function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
       ) => {
         // Add title from filename if not present
         const data = entry.data as Record<string, unknown>;
-        if (!data.title && entry.id) {
+        if (!data.title) {
           data.title = generateTitleFromFilename(entry.filePath);
         }
         return parseData(entry);

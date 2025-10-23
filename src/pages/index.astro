@@ -1,52 +1,45 @@
 ---
 import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const content = await getCollection("content");
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Kageetai.net</title>
-  </head>
-  <body>
-    <h1>Kageetai.net</h1>
+<BaseLayout>
+  <h1>Kageetai.net</h1>
 
-    <blockquote>
-      Ramblings, musing and the likes. Trying to practice writing and perhaps
-      build a digital garden or blog here.
-    </blockquote>
+  <blockquote>
+    Ramblings, musing and the likes. Trying to practice writing and perhaps
+    build a digital garden or blog here.
+  </blockquote>
 
-    <p>
-      My curiosity and passion for frontend development always keeps me trying
-      out new technologies and features, the experience with I want to try to
-      share here.
-    </p>
+  <p>
+    My curiosity and passion for frontend development always keeps me trying out
+    new technologies and features, the experience with I want to try to share
+    here.
+  </p>
 
-    <p>
-      Check my first articles on the left. Other projects can also be found on
-      my <a href="https://github.com/Kageetai">GitHub profile</a>.
-    </p>
+  <p>
+    Check my first articles on the left. Other projects can also be found on my <a
+      href="https://github.com/Kageetai">GitHub profile</a
+    >.
+  </p>
 
-    <a href="https://skillicons.dev"
-      ><img
-        src="https://skillicons.dev/icons?i=js,ts,html,css,react,nodejs,npm,bash,git,githubactions,idea,md,figma,obsidian,aws&perline=5"
-        alt="My Skills"
-      /></a
-    >
+  <a href="https://skillicons.dev"
+    ><img
+      src="https://skillicons.dev/icons?i=js,ts,html,css,react,nodejs,npm,bash,git,githubactions,idea,md,figma,obsidian,aws&perline=5"
+      alt="My Skills"
+    /></a
+  >
 
-    <h2>My posts</h2>
-    <ul>
-      {
-        content.map((post) => (
-          <li>
-            <a href={`/${post.id}`}>{post.data.title}</a>
-          </li>
-        ))
-      }
-    </ul>
-  </body>
-</html>
+  <h2>My posts</h2>
+  <ul>
+    {
+      content.map((post) => (
+        <li>
+          <a href={`/${post.id}`}>{post.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>
