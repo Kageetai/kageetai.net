@@ -1,8 +1,9 @@
 ---
 created: 2025-09-01T22:32+02:00
-changed: 2025-10-01T10:26+02:00
-related: "[[20250923T103910 Mystical_Ninja_Article_Finishing_Touches]]"
+changed: 2025-10-29T15:20+01:00
+played: 2025-09-21
 publish: true
+image: "[N64 box art](./attachments/Mystical%20Ninja%20Starring%20Goemon-1756799960028.webp)"
 ---
   
 > Nostalgia is a Liar  
