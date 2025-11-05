@@ -1,9 +1,10 @@
 ---
 created: 2024-07-31T14:44+02:00
-changed: 2024-07-31T16:53+02:00
+changed: 2025-11-05T09:58+01:00
+publish: true
+published: 2024-07-31
 summary: "We recently had a little hour-long mini hackathon at my work, where we had one hour to develop anything to a specific topic and for this first iteration the topic was: **90s websites**!"
 url: https://codepen.io/Kageetai/pen/vYqGGLp
-publish: true
 ---
   
 We recently had a little hour-long mini hackathon at my work, where we had one hour to develop anything to a specific topic and for this first iteration the topic was: **90s websites**!  
@@ -52,9 +53,9 @@ if (entry.isIntersecting) {
 All this together looks like this:  
   
 <p class="codepen" data-height="300" data-default-tab="css,result" data-slug-hash="vYqGGLp" data-pen-title="Marquee Machine" data-user="Kageetai" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">  
-  <span>See the Pen <a href="https://codepen.io/Kageetai/pen/vYqGGLp">  
-  Marquee Machine</a> by Kageetai (<a href="https://codepen.io/Kageetai">@Kageetai</a>)  
-  on <a href="https://codepen.io">CodePen</a>.</span>  
+	<span>See the Pen <a href="https://codepen.io/Kageetai/pen/vYqGGLp">  
+	Marquee Machine</a> by Kageetai (<a href="https://codepen.io/Kageetai">@Kageetai</a>)  
+	on <a href="https://codepen.io">CodePen</a>.</span>  
 </p>  
 <script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>  
   
