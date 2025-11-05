@@ -35,7 +35,7 @@ jobs:
         uses: burnett01/rsync-deployments@7.1.0
         with:
           switches: -avrh --delete
-          path: public/
+          path: dist/
           remote_path: /var/www/virtual/${{ vars.SSH_USERNAME }}/html
           remote_host: ${{ vars.SSH_HOST }}
           remote_user: ${{ vars.SSH_USERNAME }}
