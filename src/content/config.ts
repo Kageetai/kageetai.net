@@ -5,6 +5,15 @@ import { glob, type ParseDataOptions } from "astro/loaders";
 const generateTitleFromFilename = (path?: string) =>
   path?.split("/").pop()?.replace(".md", "");
 
+// Helper function to extract image path from markdown link syntax
+const extractImagePath = (
+  markdownLink: string | undefined,
+): string | undefined => {
+  if (!markdownLink) return undefined;
+  const match = markdownLink.match(/\[.*?]\((.*?)\)/);
+  return match?.[1];
+};
+
 // Custom glob loader that adds title from filename if missing
 function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
   const loader = glob(options);
@@ -31,7 +40,7 @@ function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
 const games = defineCollection({
   loader: globWithTitleFallback({
     pattern: "**/*.md",
-    base: "./content/Games",
+    base: "./src/content/Games",
   }),
   schema: z.object({
     title: z.string(),
@@ -45,7 +54,7 @@ const games = defineCollection({
 const projects = defineCollection({
   loader: globWithTitleFallback({
     pattern: "**/*.md",
-    base: "./content/Projects",
+    base: "./src/content/Projects",
   }),
   schema: z.object({
     title: z.string(),
@@ -61,13 +70,18 @@ const projects = defineCollection({
 const content = defineCollection({
   loader: globWithTitleFallback({
     pattern: "**/*.md",
-    base: "./content",
+    base: "./src/content",
   }),
   schema: z.object({
     title: z.string(),
     created: z.string(),
     changed: z.string(),
     publish: z.boolean(),
+    published: z.date(),
+    image: z
+      .string()
+      .transform((val) => extractImagePath(val) || val)
+      .optional(),
   }),
 });
 
