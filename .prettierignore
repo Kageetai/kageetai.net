@@ -1,2 +1,2 @@
-/content/
+/src/content/**/*.md
 pnpm-lock.yaml

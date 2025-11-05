@@ -6,9 +6,11 @@ const generateTitleFromFilename = (path?: string) =>
   path?.split("/").pop()?.replace(".md", "");
 
 // Helper function to extract image path from markdown link syntax
-const extractImagePath = (markdownLink: string | undefined): string | undefined => {
+const extractImagePath = (
+  markdownLink: string | undefined,
+): string | undefined => {
   if (!markdownLink) return undefined;
-  const match = markdownLink.match(/\[.*?\]\((.*?)\)/);
+  const match = markdownLink.match(/\[.*?]\((.*?)\)/);
   return match?.[1];
 };
 
@@ -76,7 +78,10 @@ const content = defineCollection({
     changed: z.string(),
     publish: z.boolean(),
     published: z.date(),
-    image: z.string().transform((val) => extractImagePath(val) || val).optional(),
+    image: z
+      .string()
+      .transform((val) => extractImagePath(val) || val)
+      .optional(),
   }),
 });
 
