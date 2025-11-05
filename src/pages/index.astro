@@ -2,30 +2,45 @@
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { marked } from "marked";
 import { Calendar } from "@lucide/astro";
 
 const content = await getCollection("content");
+const formatter = new Intl.DateTimeFormat();
 
-// Helper function to extract URL from markdown link syntax
-function extractUrlFromMarkdown(
-  markdown: string | undefined,
-): string | undefined {
-  if (!markdown) return undefined;
+// Import all images from content directory
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/content/**/attachments/*.{png,jpg,jpeg,webp,gif}",
+);
 
-  // Parse markdown to HTML
-  const html = marked.parse(markdown, { async: false }) as string;
+// Helper to resolve image paths
+async function resolveImage(imagePath: string | undefined) {
+  if (!imagePath) return undefined;
 
-  // Extract href from <a> tag or src from <img> tag
-  const hrefMatch = html.match(/href="([^"]+)"/);
-  const srcMatch = html.match(/src="([^"]+)"/);
+  // Handle relative paths like ./attachments/image.webp
+  const normalizedPath = imagePath.startsWith("./")
+    ? `/src/content/${imagePath.substring(2)}`
+    : imagePath;
 
-  console.log("extractUrlFromMarkdown", markdown, html, hrefMatch, srcMatch);
+  // Try to find matching image
+  for (const [path, imageImport] of Object.entries(images)) {
+    if (
+      path.endsWith(decodeURIComponent(normalizedPath.split("/").pop() || ""))
+    ) {
+      const image = await imageImport();
+      return image.default;
+    }
+  }
 
-  return hrefMatch?.[1] || srcMatch?.[1] || markdown;
+  return undefined;
 }
 
-const formatter = new Intl.DateTimeFormat();
+// Resolve images for all content
+const contentWithImages = await Promise.all(
+  content.map(async (post) => ({
+    ...post,
+    resolvedImage: await resolveImage(post.data.image),
+  })),
+);
 ---
 
 <BaseLayout>
@@ -59,32 +74,64 @@ const formatter = new Intl.DateTimeFormat();
 
   <ul>
     {
-      content.map((post) => {
-        // Parse Markdown link format using marked
-        const imageUrl = extractUrlFromMarkdown(post.data?.image);
+      contentWithImages.map((post) => {
         const published = formatter.format(post.data.published);
 
         return (
           <li>
-            {!!imageUrl && (
-              <Image
-                src={imageUrl}
-                alt={post.data.title}
-                width="100"
-                height="100"
-              />
-            )}
+            <a href={post.id}>
+              <article>
+                {post.resolvedImage && (
+                  <Image
+                    src={post.resolvedImage}
+                    alt={post.data.title}
+                    width={361}
+                  />
+                )}
 
-            <a href={post.id}>{post.data.title}</a>
+                <header>
+                  <h1>{post.data.title}</h1>
 
-            <div>
-              <small>
-                <Calendar size={14} stroke-width={1} /> {published}
-              </small>
-            </div>
+                  <div>
+                    <small>
+                      <Calendar size={14} stroke-width={1} />
+                      {published}
+                    </small>
+                  </div>
+                </header>
+              </article>
+            </a>
           </li>
         );
       })
     }
   </ul>
 </BaseLayout>
+
+<style>
+  ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  article {
+    border: 1px solid #ccc;
+
+    &:hover {
+      border-color: #000;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    header {
+      padding: 1rem;
+    }
+  }
+</style>

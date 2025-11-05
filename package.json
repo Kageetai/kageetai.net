@@ -14,7 +14,6 @@
     "@astrojs/mdx": "^4.3.9",
     "@lucide/astro": "^0.552.0",
     "astro": "^5.14.8",
-    "marked": "^16.4.1",
     "sharp": "^0.34.4"
   },
   "devDependencies": {
