@@ -1,7 +1,10 @@
 name: Deploy to Uberspace
 on:
   push:
-    branches: [main]
+    branches:
+      - master
+      - main
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
