@@ -23,6 +23,14 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
 </html>
 
 <style is:global>
+  :root {
+    color-scheme: light dark;
+    --color-background: light-dark(#efedea, #181b19);
+    --color-foreground: light-dark(#333b3c, #efefec);
+    --color-interactive: light-dark(#275c4e, #b1d8c7);
+    --radius: 0.5rem;
+  }
+
   * {
     box-sizing: border-box;
   }
@@ -45,6 +53,9 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
     max-width: 80ch;
     margin: 0 auto;
     padding: 2rem;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    border-color: var(--color-foreground);
   }
 
   img {
@@ -54,6 +65,7 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
 
   a {
     text-decoration: none;
+    color: var(--color-interactive);
   }
 
   a:hover {

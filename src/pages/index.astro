@@ -58,7 +58,7 @@ const contentWithImages = await Promise.all(
   </p>
 
   <p>
-    Check my first articles on the left. Other projects can also be found on my <a
+    Check my first articles below. Other projects can also be found on my <a
       href="https://github.com/Kageetai">GitHub profile</a
     >.
   </p>
@@ -70,7 +70,7 @@ const contentWithImages = await Promise.all(
     /></a
   >
 
-  <h2>My posts</h2>
+  <h2>Posts</h2>
 
   <ul>
     {
@@ -118,16 +118,20 @@ const contentWithImages = await Promise.all(
   }
 
   article {
-    border: 1px solid #ccc;
-
-    &:hover {
-      border-color: #000;
-    }
+    border: 1px solid;
+    border-radius: var(--radius);
+    overflow: hidden;
 
     img {
       width: 100%;
       height: auto;
       display: block;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+
+    h1 {
+      min-height: 3.5em;
     }
 
     header {
