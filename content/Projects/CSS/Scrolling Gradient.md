@@ -1,10 +1,11 @@
 ---
 created: 2024-05-13T17:48+02:00
-changed: 2025-03-13T11:51+01:00
+changed: 2025-11-05T09:55+01:00
 image: "[[Scrolling Gradient-20240514181254633.webp]]"
 publish: true
 summary: In this article, I present a short experiment to combine an animated background gradient with scroll animations in CSS.
 url: https://github.com/Kageetai/scrolling-gradient
+published: 2024-05-31
 ---
   
 > [!summary]  
