@@ -1,8 +1,31 @@
 ---
 import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { marked } from "marked";
+import { Calendar } from "@lucide/astro";
 
 const content = await getCollection("content");
+
+// Helper function to extract URL from markdown link syntax
+function extractUrlFromMarkdown(
+  markdown: string | undefined,
+): string | undefined {
+  if (!markdown) return undefined;
+
+  // Parse markdown to HTML
+  const html = marked.parse(markdown, { async: false }) as string;
+
+  // Extract href from <a> tag or src from <img> tag
+  const hrefMatch = html.match(/href="([^"]+)"/);
+  const srcMatch = html.match(/src="([^"]+)"/);
+
+  console.log("extractUrlFromMarkdown", markdown, html, hrefMatch, srcMatch);
+
+  return hrefMatch?.[1] || srcMatch?.[1] || markdown;
+}
+
+const formatter = new Intl.DateTimeFormat();
 ---
 
 <BaseLayout>
@@ -27,19 +50,41 @@ const content = await getCollection("content");
 
   <a href="https://skillicons.dev"
     ><img
-      src="https://skillicons.dev/icons?i=js,ts,html,css,react,nodejs,npm,bash,git,githubactions,idea,md,figma,obsidian,aws&perline=5"
+      src="https://skillicons.dev/icons?i=js,ts,html,css,react,nodejs,npm,bash,git,githubactions,idea,md,figma,obsidian,aws&perline=15"
       alt="My Skills"
     /></a
   >
 
   <h2>My posts</h2>
+
   <ul>
     {
-      content.map((post) => (
-        <li>
-          <a href={`/${post.id}`}>{post.data.title}</a>
-        </li>
-      ))
+      content.map((post) => {
+        // Parse Markdown link format using marked
+        const imageUrl = extractUrlFromMarkdown(post.data?.image);
+        const published = formatter.format(post.data.published);
+
+        return (
+          <li>
+            {!!imageUrl && (
+              <Image
+                src={imageUrl}
+                alt={post.data.title}
+                width="100"
+                height="100"
+              />
+            )}
+
+            <a href={post.id}>{post.data.title}</a>
+
+            <div>
+              <small>
+                <Calendar size={14} stroke-width={1} /> {published}
+              </small>
+            </div>
+          </li>
+        );
+      })
     }
   </ul>
 </BaseLayout>

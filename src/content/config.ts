@@ -68,6 +68,8 @@ const content = defineCollection({
     created: z.string(),
     changed: z.string(),
     publish: z.boolean(),
+    published: z.date(),
+    image: z.string().optional(),
   }),
 });
 

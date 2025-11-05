@@ -11,7 +11,10 @@
     "lint": "eslint && prettier . --check"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.9",
+    "@lucide/astro": "^0.552.0",
     "astro": "^5.14.8",
+    "marked": "^16.4.1",
     "sharp": "^0.34.4"
   },
   "devDependencies": {
@@ -25,5 +28,6 @@
     "prettier": "3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "typescript-eslint": "^8.46.2"
-  }
+  },
+  "packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd"
 }
