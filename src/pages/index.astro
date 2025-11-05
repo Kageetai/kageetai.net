@@ -74,36 +74,38 @@ const contentWithImages = await Promise.all(
 
   <ul>
     {
-      contentWithImages.map((post) => {
-        const published = formatter.format(post.data.published);
+      contentWithImages
+        .sort((a, b) => b.data.published.getTime() - a.data.published.getTime())
+        .map((post) => {
+          const published = formatter.format(post.data.published);
 
-        return (
-          <li>
-            <a href={post.id}>
-              <article>
-                {post.resolvedImage && (
-                  <Image
-                    src={post.resolvedImage}
-                    alt={post.data.title}
-                    width={361}
-                  />
-                )}
+          return (
+            <li>
+              <a href={post.id}>
+                <article>
+                  {post.resolvedImage && (
+                    <Image
+                      src={post.resolvedImage}
+                      alt={post.data.title}
+                      width={400}
+                    />
+                  )}
 
-                <header>
-                  <h1>{post.data.title}</h1>
+                  <header>
+                    <h1>{post.data.title}</h1>
 
-                  <div>
-                    <small>
-                      <Calendar size={14} stroke-width={1} />
-                      {published}
-                    </small>
-                  </div>
-                </header>
-              </article>
-            </a>
-          </li>
-        );
-      })
+                    <div>
+                      <small>
+                        <Calendar size={14} stroke-width={1} />
+                        {published}
+                      </small>
+                    </div>
+                  </header>
+                </article>
+              </a>
+            </li>
+          );
+        })
     }
   </ul>
 </BaseLayout>
@@ -122,12 +124,20 @@ const contentWithImages = await Promise.all(
     border-radius: var(--radius);
     overflow: hidden;
 
+    &:hover {
+      img {
+        transform: scale(1.05);
+        transition: transform 0.3s ease-in-out;
+      }
+    }
+
     img {
       width: 100%;
       height: auto;
       display: block;
       aspect-ratio: 4 / 3;
       object-fit: cover;
+      transition: transform 0.3s ease-in-out;
     }
 
     h1 {
