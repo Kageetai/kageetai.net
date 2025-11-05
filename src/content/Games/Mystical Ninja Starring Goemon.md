@@ -1,7 +1,7 @@
 ---
 created: 2025-09-01T22:32+02:00
 changed: 2025-11-05T09:58+01:00
-image: "[N64 box art](/src/content/Games/attachments/Mystical%20Ninja%20Starring%20Goemon-1756799960028.webp)"
+image: "[N64 box art](./attachments/Mystical%20Ninja%20Starring%20Goemon-1756799960028.webp)"
 played: 2025-09-21
 publish: true
 published: 2025-09-30
@@ -11,7 +11,7 @@ published: 2025-09-30
   
 Recently, while waiting for a late-night bus after a day out with friends, we talked about old animes and games we played or watched as kids. Sharing these memories is always interesting. As a kid, I didn't watch as many animes as I do now, apart from the obligatory *Dragon Ball*. So, I shared my memories of a niche Nintendo 64 game: *Mystical Ninja Starring Goemon*.  
   
-![N64 box art](/src/content/Games/attachments/Mystical%20Ninja%20Starring%20Goemon-1756799960028.webp)  
+![N64 box art](./attachments/Mystical%20Ninja%20Starring%20Goemon-1756799960028.webp)  
   
 Mentioning this game reminded me of my childhood. I have no idea where I got it or how I found it, but I have vivid memories of the colourful worlds and weird characters.  
 I am pretty sure I even had a physical copy of this game, maybe found somewhere on a flea market or whatever. The Nintendo 64 was my main console back in the day, and I was, might I say, pretty addicted. I collected weird games and even remember the day I got the console, it was very dramatic for a young teenage boy.  
