@@ -1,14 +1,14 @@
 ---
 created: 2025-10-15T10:10+02:00
-changed: 2025-11-05T09:58+01:00
-image: "[Super Skelemania-1760516813982.webp](/src/content/Games/attachments/Super%20Skelemania-1760516813982.webp)"
+changed: 2025-11-05T16:42+01:00
+image: "[Super Skelemania-1760516813982.webp](./attachments/Super%20Skelemania-1760516813982.webp)"
 played: 2025-10-14
 publish: true
 published: 2025-11-04
 url: https://store.steampowered.com/app/730920/Super_Skelemania/
 ---
   
-![Super Skelemania-1760516813982.webp](/src/content/Games/attachments/Super%20Skelemania-1760516813982.webp)  
+![Super Skelemania-1760516813982.webp](./attachments/Super%20Skelemania-1760516813982.webp)  
   
 > Who doesn't love a nice palette cleanser in between bigger meals?  
   
