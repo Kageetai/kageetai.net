@@ -1,6 +1,5 @@
 import { defineCollection, z } from "astro:content";
 import { glob, type ParseDataOptions } from "astro/loaders";
-import type { ImageMetadata } from "astro";
 
 // Helper function to generate title from filename
 const generateTitleFromFilename = (path?: string) =>
@@ -15,44 +14,20 @@ const extractImagePath = (
   // Try wiki-link format: [[filename]]
   const wikiMatch = markdownLink.match(/\[\[(.+?)\]\]/);
   if (wikiMatch?.[1]) {
-    return `./attachments/${wikiMatch[1]}`;
+    return `./attachments/${decodeURIComponent(wikiMatch[1])}`;
   }
 
   // Try markdown link format: [text](path)
   const mdMatch = markdownLink.match(/\[.*?]\((.*?)\)/);
-  return mdMatch?.[1];
-};
-
-// Import all images from content directory
-const images = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/content/**/attachments/*.{png,jpg,jpeg,webp,gif}",
-);
-
-// Helper to resolve image paths
-async function resolveImage(
-  imagePath: string | undefined,
-): Promise<ImageMetadata | undefined> {
-  if (!imagePath) return undefined;
-
-  // Handle relative paths like ./attachments/image.webp
-  const normalizedPath = imagePath.startsWith("./")
-    ? `/src/content/${imagePath.substring(2)}`
-    : imagePath;
-
-  // Try to find matching image
-  for (const [path, imageImport] of Object.entries(images)) {
-    if (
-      path.endsWith(decodeURIComponent(normalizedPath.split("/").pop() || ""))
-    ) {
-      const image = await imageImport();
-      return image.default;
-    }
+  if (mdMatch?.[1]) {
+    // Decode URL-encoded characters (e.g., %20 -> space)
+    return decodeURIComponent(mdMatch[1]);
   }
 
   return undefined;
-}
+};
 
-// Custom glob loader that adds title from filename if missing and resolves images
+// Custom glob loader that adds title from filename if missing and extracts image paths
 function globWithTitleAndImageFallback(options: Parameters<typeof glob>[0]) {
   const loader = glob(options);
   const originalLoad = loader.load;
@@ -68,23 +43,14 @@ function globWithTitleAndImageFallback(options: Parameters<typeof glob>[0]) {
           data.title = generateTitleFromFilename(entry.filePath);
         }
 
-        // Resolve image from frontmatter before parsing
+        // Extract image path from markdown link format if needed
         const frontmatterImage = data.image as string | undefined;
         if (frontmatterImage) {
-          try {
-            // Extract path from markdown link format if needed
-            const imagePath =
-              extractImagePath(frontmatterImage) || frontmatterImage;
-            const resolvedImage = await resolveImage(imagePath);
-
-            if (resolvedImage) {
-              // Replace the string with resolved ImageMetadata before parsing
-              data.image = resolvedImage;
-            }
-          } catch (error) {
-            // Skip image resolution during typecheck or if it fails
-            console.warn(`Failed to resolve image: ${frontmatterImage}`, error);
-          }
+          const imagePath =
+            extractImagePath(frontmatterImage) || frontmatterImage;
+          // Convert the path to be relative to the markdown file
+          // Astro's image() helper will handle the actual resolution
+          data.image = imagePath;
         }
 
         return parseData(entry);
@@ -100,14 +66,15 @@ const games = defineCollection({
     pattern: "**/*.md",
     base: "./src/content/Games",
   }),
-  schema: z.object({
-    title: z.string(),
-    created: z.string(),
-    changed: z.string(),
-    publish: z.boolean(),
-    related: z.string().optional(),
-    image: z.any().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      created: z.string(),
+      changed: z.string(),
+      publish: z.boolean(),
+      related: z.string().optional(),
+      image: image().optional(),
+    }),
 });
 
 const projects = defineCollection({
@@ -115,15 +82,16 @@ const projects = defineCollection({
     pattern: "**/*.md",
     base: "./src/content/Projects",
   }),
-  schema: z.object({
-    title: z.string(),
-    created: z.string(),
-    changed: z.string(),
-    publish: z.boolean(),
-    summary: z.string().optional(),
-    url: z.string().url().optional(),
-    image: z.any().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      created: z.string(),
+      changed: z.string(),
+      publish: z.boolean(),
+      summary: z.string().optional(),
+      url: z.string().url().optional(),
+      image: image().optional(),
+    }),
 });
 
 const content = defineCollection({
@@ -131,14 +99,15 @@ const content = defineCollection({
     pattern: "**/*.md",
     base: "./src/content",
   }),
-  schema: z.object({
-    title: z.string(),
-    created: z.string(),
-    changed: z.string(),
-    publish: z.boolean(),
-    published: z.date(),
-    image: z.any().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      created: z.string(),
+      changed: z.string(),
+      publish: z.boolean(),
+      published: z.date(),
+      image: image().optional(),
+    }),
 });
 
 export const collections = {
