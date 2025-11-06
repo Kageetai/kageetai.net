@@ -16,9 +16,16 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 async function resolveImage(imagePath: string | undefined) {
   if (!imagePath) return undefined;
 
+  // Handle relative paths like ./attachments/image.webp
+  const normalizedPath = imagePath.startsWith("./")
+    ? `/src/content/${imagePath.substring(2)}`
+    : imagePath;
+
   // Try to find matching image
   for (const [path, imageImport] of Object.entries(images)) {
-    if (path.endsWith(decodeURIComponent(imagePath.split("/").pop() || ""))) {
+    if (
+      path.endsWith(decodeURIComponent(normalizedPath.split("/").pop() || ""))
+    ) {
       const image = await imageImport();
       return image.default;
     }
