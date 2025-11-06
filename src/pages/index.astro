@@ -81,10 +81,14 @@ const formatter = new Intl.DateTimeFormat();
     padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    align-items: stretch;
     gap: 1rem;
   }
 
-  article {
+  a:has(> article) {
+    display: flex;
+    height: 100%;
+    align-items: flex-end;
     border: 1px solid;
     border-radius: var(--radius);
     overflow: hidden;
@@ -92,7 +96,7 @@ const formatter = new Intl.DateTimeFormat();
     &:hover {
       img {
         transform: scale(1.05);
-        transition: transform 0.3s ease-in-out;
+        transition: transform 0.5s ease-in-out;
       }
     }
 
@@ -102,7 +106,7 @@ const formatter = new Intl.DateTimeFormat();
       display: block;
       aspect-ratio: 4 / 3;
       object-fit: cover;
-      transition: transform 0.3s ease-in-out;
+      transition: transform 0.5s ease-in-out;
     }
 
     h1 {
