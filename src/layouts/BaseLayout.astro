@@ -16,6 +16,9 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
+    <script>
+      import "@justinribeiro/lite-youtube";
+    </script>
   </head>
   <body>
     <slot />

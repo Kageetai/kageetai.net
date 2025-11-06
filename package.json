@@ -11,10 +11,14 @@
     "lint": "eslint && prettier . --check"
   },
   "dependencies": {
+    "@astro-community/astro-embed-youtube": "^0.5.7",
     "@astrojs/mdx": "^4.3.9",
+    "@justinribeiro/lite-youtube": "^1.9.0",
     "@lucide/astro": "^0.552.0",
     "astro": "^5.15.3",
-    "sharp": "^0.34.4"
+    "mdast": "^3.0.0",
+    "sharp": "^0.34.4",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/css": "^0.14.1",

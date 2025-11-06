@@ -8,18 +8,30 @@ importers:
 
   .:
     dependencies:
+      '@astro-community/astro-embed-youtube':
+        specifier: ^0.5.7
+        version: 0.5.7(astro@5.15.3(@types/node@24.10.0)(jiti@2.6.1)(rollup@4.52.5)(typescript@5.9.3))
       '@astrojs/mdx':
         specifier: ^4.3.9
         version: 4.3.9(astro@5.15.3(@types/node@24.10.0)(jiti@2.6.1)(rollup@4.52.5)(typescript@5.9.3))
+      '@justinribeiro/lite-youtube':
+        specifier: ^1.9.0
+        version: 1.9.0
       '@lucide/astro':
         specifier: ^0.552.0
         version: 0.552.0(astro@5.15.3(@types/node@24.10.0)(jiti@2.6.1)(rollup@4.52.5)(typescript@5.9.3))
       astro:
         specifier: ^5.15.3
         version: 5.15.3(@types/node@24.10.0)(jiti@2.6.1)(rollup@4.52.5)(typescript@5.9.3)
+      mdast:
+        specifier: ^3.0.0
+        version: 3.0.0
       sharp:
         specifier: ^0.34.4
         version: 0.34.4
+      unist-util-visit:
+        specifier: ^5.0.0
+        version: 5.0.0
     devDependencies:
       '@eslint/css':
         specifier: ^0.14.1
@@ -53,6 +65,11 @@ importers:
         version: 8.46.3(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
 
 packages:
+
+  '@astro-community/astro-embed-youtube@0.5.7':
+    resolution: {integrity: sha512-Yq1cw4JCnrjnf/278frWZ9VQyAjyAwUd1CH2XZHFt9pNb5PeFNoRUSPlBvUzN6F/XorkWEEyE2N98rcdyx9mHg==}
+    peerDependencies:
+      astro: ^2.0.0 || ^3.0.0-beta || ^4.0.0-beta || ^5.0.0-beta
 
   '@astrojs/compiler@2.13.0':
     resolution: {integrity: sha512-mqVORhUJViA28fwHYaWmsXSzLO9osbdZ5ImUfxBarqsYdMlPbqAqGJCxsNzvppp1BEzc1mJNjOVvQqeDN8Vspw==}
@@ -447,6 +464,9 @@ packages:
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
+
+  '@justinribeiro/lite-youtube@1.9.0':
+    resolution: {integrity: sha512-+VZutWCVEpXNGR00ch/8g8snexv5q8zN0NCJWrXdRBYQe0Oel1HKDl9BVEM7FzZbf/IWPGIdWs4WcGMxXITFKA==}
 
   '@lucide/astro@0.552.0':
     resolution: {integrity: sha512-nPO3RPor+3eOeom+KDmNGDSLYec5DYn5jc085FNNqIpUkl6kH8wnxZhtd53aGJleYrUt3/xIbwLxsrU1cm6epg==}
@@ -1318,6 +1338,9 @@ packages:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
 
+  lite-youtube-embed@0.3.3:
+    resolution: {integrity: sha512-gFfVVnj6NRjxVfJKo3qoLtpi0v5mn3AcR4eKD45wrxQuxzveFJUb+7Cr6uV6n+DjO8X3p0UzPPquhGt0H/y+NA==}
+
   locate-path@6.0.0:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
@@ -1394,6 +1417,10 @@ packages:
 
   mdast-util-to-string@4.0.0:
     resolution: {integrity: sha512-0H44vDimn51F0YwvxSJSm0eCDOJTRlmN0R1yBh4HLj9wiV1Dn0QoXGbvFAWj2hSItVTlCmBF1hqKlIyUBVFLPg==}
+
+  mdast@3.0.0:
+    resolution: {integrity: sha512-xySmf8g4fPKMeC07jXGz971EkLbWAJ83s4US2Tj9lEdnZ142UP5grN73H1Xd3HzrdbU5o9GYYP/y8F9ZSwLE9g==}
+    deprecated: '`mdast` was renamed to `remark`'
 
   mdn-data@2.12.2:
     resolution: {integrity: sha512-IEn+pegP1aManZuckezWCO+XZQDplx1366JoVhTpMpBB1sPey/SbveZQUosKiKiGYjg1wH4pMlNgXbCiYgihQA==}
@@ -2153,6 +2180,11 @@ packages:
 
 snapshots:
 
+  '@astro-community/astro-embed-youtube@0.5.7(astro@5.15.3(@types/node@24.10.0)(jiti@2.6.1)(rollup@4.52.5)(typescript@5.9.3))':
+    dependencies:
+      astro: 5.15.3(@types/node@24.10.0)(jiti@2.6.1)(rollup@4.52.5)(typescript@5.9.3)
+      lite-youtube-embed: 0.3.3
+
   '@astrojs/compiler@2.13.0': {}
 
   '@astrojs/internal-helpers@0.7.4': {}
@@ -2475,6 +2507,8 @@ snapshots:
     optional: true
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
+
+  '@justinribeiro/lite-youtube@1.9.0': {}
 
   '@lucide/astro@0.552.0(astro@5.15.3(@types/node@24.10.0)(jiti@2.6.1)(rollup@4.52.5)(typescript@5.9.3))':
     dependencies:
@@ -3563,6 +3597,8 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
+  lite-youtube-embed@0.3.3: {}
+
   locate-path@6.0.0:
     dependencies:
       p-locate: 5.0.0
@@ -3755,6 +3791,8 @@ snapshots:
   mdast-util-to-string@4.0.0:
     dependencies:
       '@types/mdast': 4.0.4
+
+  mdast@3.0.0: {}
 
   mdn-data@2.12.2: {}
 
