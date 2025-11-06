@@ -1,6 +1,6 @@
 import { defineCollection, z } from "astro:content";
 import { glob, type ParseDataOptions } from "astro/loaders";
-import type { ImageMetadata } from "astro:assets";
+import type { ImageMetadata } from "astro";
 
 // Helper function to generate title from filename
 const generateTitleFromFilename = (path?: string) =>
@@ -71,14 +71,19 @@ function globWithTitleAndImageFallback(options: Parameters<typeof glob>[0]) {
         // Resolve image from frontmatter before parsing
         const frontmatterImage = data.image as string | undefined;
         if (frontmatterImage) {
-          // Extract path from markdown link format if needed
-          const imagePath =
-            extractImagePath(frontmatterImage) || frontmatterImage;
-          const resolvedImage = await resolveImage(imagePath);
+          try {
+            // Extract path from markdown link format if needed
+            const imagePath =
+              extractImagePath(frontmatterImage) || frontmatterImage;
+            const resolvedImage = await resolveImage(imagePath);
 
-          if (resolvedImage) {
-            // Replace the string with resolved ImageMetadata before parsing
-            data.image = resolvedImage;
+            if (resolvedImage) {
+              // Replace the string with resolved ImageMetadata before parsing
+              data.image = resolvedImage;
+            }
+          } catch (error) {
+            // Skip image resolution during typecheck or if it fails
+            console.warn(`Failed to resolve image: ${frontmatterImage}`, error);
           }
         }
 

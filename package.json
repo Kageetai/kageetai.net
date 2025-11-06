@@ -8,7 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier . --write",
-    "lint": "eslint && prettier . --check"
+    "lint": "astro check && eslint && prettier . --check"
   },
   "dependencies": {
     "@astro-community/astro-embed-youtube": "^0.5.7",
@@ -21,8 +21,10 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.5",
     "@eslint/css": "^0.14.1",
     "@eslint/js": "^9.39.1",
+    "@types/mdast": "^4.0.4",
     "@typescript-eslint/parser": "^8.46.3",
     "eslint": "^9.39.1",
     "eslint-plugin-astro": "^1.5.0",
@@ -30,6 +32,7 @@
     "jiti": "^2.6.1",
     "prettier": "3.6.2",
     "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.3"
   },
   "packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd"

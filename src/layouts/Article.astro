@@ -23,9 +23,13 @@ const { title, description, created, changed } = Astro.props;
       <aside class="meta">
         <ul>
           <li>
-            <time datetime={created}
-              >Created: {new Date(created).toLocaleDateString()}</time
-            >
+            {
+              created && (
+                <time datetime={created}>
+                  Created: {new Date(created).toLocaleDateString()}
+                </time>
+              )
+            }
           </li>
           <li>
             {
