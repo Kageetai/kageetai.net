@@ -14,11 +14,7 @@ const { game } = Astro.props;
 const { Content } = await render(game);
 ---
 
-<Article
-  title={game.data.title || game.id}
-  created={game.data.created}
-  changed={game.data.changed}
->
+<Article {...game.data} title={game.data.title || game.id}>
   <Content />
 
   {

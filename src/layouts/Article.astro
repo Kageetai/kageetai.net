@@ -1,19 +1,19 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import { Calendar, FileText } from "@lucide/astro";
 
 interface Props {
   title: string;
-  description?: string;
-  created?: string;
-  changed?: string;
+  summary?: string;
+  published: Date;
 }
 
-const { title, description, created, changed } = Astro.props;
+const { title, summary, published } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={summary}>
   <nav>
-    <a href="/">← Back</a>
+    <a href="/">← Kageetai.net</a>
   </nav>
 
   <article>
@@ -23,23 +23,20 @@ const { title, description, created, changed } = Astro.props;
       <aside class="meta">
         <ul>
           <li>
-            {
-              created && (
-                <time datetime={created}>
-                  Created: {new Date(created).toLocaleDateString()}
-                </time>
-              )
-            }
+            <Calendar size={18} stroke-width={1} />
+            <time datetime={published.toISOString()}>
+              {new Date(published).toLocaleDateString()}
+            </time>
           </li>
-          <li>
-            {
-              changed && (
-                <time datetime={changed}>
-                  Changed: {new Date(changed).toLocaleDateString()}
-                </time>
-              )
-            }
-          </li>
+
+          {
+            summary && (
+              <li>
+                <FileText size={18} stroke-width={1} />
+                {summary}
+              </li>
+            )
+          }
         </ul>
       </aside>
     </header>
@@ -47,3 +44,31 @@ const { title, description, created, changed } = Astro.props;
 
   <slot />
 </BaseLayout>
+
+<style>
+  aside {
+    ul {
+      display: flex;
+      gap: 1rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      > li {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        border: 1px solid;
+        border-radius: var(--radius);
+
+        > * {
+          flex: 1 0 auto;
+        }
+
+        > *:first-child {
+          margin-top: 0.2rem;
+        }
+      }
+    }
+  }
+</style>
