@@ -1,46 +1,11 @@
 ---
 import { getCollection } from "astro:content";
-import { Image, type ImageMetadata } from "astro:assets";
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Calendar } from "@lucide/astro";
 
 const content = await getCollection("content");
 const formatter = new Intl.DateTimeFormat();
-
-// Import all images from content directory
-const images = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/content/**/attachments/*.{png,jpg,jpeg,webp,gif}",
-);
-
-// Helper to resolve image paths
-async function resolveImage(imagePath: string | undefined) {
-  if (!imagePath) return undefined;
-
-  // Handle relative paths like ./attachments/image.webp
-  const normalizedPath = imagePath.startsWith("./")
-    ? `/src/content/${imagePath.substring(2)}`
-    : imagePath;
-
-  // Try to find matching image
-  for (const [path, imageImport] of Object.entries(images)) {
-    if (
-      path.endsWith(decodeURIComponent(normalizedPath.split("/").pop() || ""))
-    ) {
-      const image = await imageImport();
-      return image.default;
-    }
-  }
-
-  return undefined;
-}
-
-// Resolve images for all content
-const contentWithImages = await Promise.all(
-  content.map(async (post) => ({
-    ...post,
-    resolvedImage: await resolveImage(post.data.image),
-  })),
-);
 ---
 
 <BaseLayout>
@@ -74,7 +39,7 @@ const contentWithImages = await Promise.all(
 
   <ul>
     {
-      contentWithImages
+      content
         .sort((a, b) => b.data.published.getTime() - a.data.published.getTime())
         .map((post) => {
           const published = formatter.format(post.data.published);
@@ -83,9 +48,9 @@ const contentWithImages = await Promise.all(
             <li>
               <a href={post.id}>
                 <article>
-                  {post.resolvedImage && (
+                  {post.data.image && (
                     <Image
-                      src={post.resolvedImage}
+                      src={post.data.image}
                       alt={post.data.title}
                       width={400}
                     />
@@ -116,10 +81,14 @@ const contentWithImages = await Promise.all(
     padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    align-items: stretch;
     gap: 1rem;
   }
 
-  article {
+  a:has(> article) {
+    display: flex;
+    height: 100%;
+    align-items: flex-end;
     border: 1px solid;
     border-radius: var(--radius);
     overflow: hidden;
@@ -127,7 +96,7 @@ const contentWithImages = await Promise.all(
     &:hover {
       img {
         transform: scale(1.05);
-        transition: transform 0.3s ease-in-out;
+        transition: transform 0.5s ease-in-out;
       }
     }
 
@@ -137,7 +106,7 @@ const contentWithImages = await Promise.all(
       display: block;
       aspect-ratio: 4 / 3;
       object-fit: cover;
-      transition: transform 0.3s ease-in-out;
+      transition: transform 0.5s ease-in-out;
     }
 
     h1 {

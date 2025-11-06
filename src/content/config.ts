@@ -5,17 +5,30 @@ import { glob, type ParseDataOptions } from "astro/loaders";
 const generateTitleFromFilename = (path?: string) =>
   path?.split("/").pop()?.replace(".md", "");
 
-// Helper function to extract image path from markdown link syntax
+// Helper function to extract image path from markdown link or wiki-link syntax
 const extractImagePath = (
   markdownLink: string | undefined,
 ): string | undefined => {
   if (!markdownLink) return undefined;
-  const match = markdownLink.match(/\[.*?]\((.*?)\)/);
-  return match?.[1];
+
+  // Try wiki-link format: [[filename]]
+  const wikiMatch = markdownLink.match(/\[\[(.+?)\]\]/);
+  if (wikiMatch?.[1]) {
+    return `./attachments/${decodeURIComponent(wikiMatch[1])}`;
+  }
+
+  // Try markdown link format: [text](path)
+  const mdMatch = markdownLink.match(/\[.*?]\((.*?)\)/);
+  if (mdMatch?.[1]) {
+    // Decode URL-encoded characters (e.g., %20 -> space)
+    return decodeURIComponent(mdMatch[1]);
+  }
+
+  return undefined;
 };
 
-// Custom glob loader that adds title from filename if missing
-function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
+// Custom glob loader that adds title from filename if missing and extracts image paths
+function globWithTitleAndImageFallback(options: Parameters<typeof glob>[0]) {
   const loader = glob(options);
   const originalLoad = loader.load;
 
@@ -29,6 +42,17 @@ function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
         if (!data.title) {
           data.title = generateTitleFromFilename(entry.filePath);
         }
+
+        // Extract image path from markdown link format if needed
+        const frontmatterImage = data.image as string | undefined;
+        if (frontmatterImage) {
+          const imagePath =
+            extractImagePath(frontmatterImage) || frontmatterImage;
+          // Convert the path to be relative to the markdown file
+          // Astro's image() helper will handle the actual resolution
+          data.image = imagePath;
+        }
+
         return parseData(entry);
       },
       ...rest,
@@ -38,51 +62,52 @@ function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
 }
 
 const games = defineCollection({
-  loader: globWithTitleFallback({
+  loader: globWithTitleAndImageFallback({
     pattern: "**/*.md",
     base: "./src/content/Games",
   }),
-  schema: z.object({
-    title: z.string(),
-    created: z.string(),
-    changed: z.string(),
-    publish: z.boolean(),
-    related: z.string().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      created: z.string(),
+      changed: z.string(),
+      publish: z.boolean(),
+      related: z.string().optional(),
+      image: image().optional(),
+    }),
 });
 
 const projects = defineCollection({
-  loader: globWithTitleFallback({
+  loader: globWithTitleAndImageFallback({
     pattern: "**/*.md",
     base: "./src/content/Projects",
   }),
-  schema: z.object({
-    title: z.string(),
-    created: z.string(),
-    changed: z.string(),
-    publish: z.boolean(),
-    summary: z.string().optional(),
-    url: z.string().url().optional(),
-    image: z.string().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      created: z.string(),
+      changed: z.string(),
+      publish: z.boolean(),
+      summary: z.string().optional(),
+      url: z.string().url().optional(),
+      image: image().optional(),
+    }),
 });
 
 const content = defineCollection({
-  loader: globWithTitleFallback({
+  loader: globWithTitleAndImageFallback({
     pattern: "**/*.md",
     base: "./src/content",
   }),
-  schema: z.object({
-    title: z.string(),
-    created: z.string(),
-    changed: z.string(),
-    publish: z.boolean(),
-    published: z.date(),
-    image: z
-      .string()
-      .transform((val) => extractImagePath(val) || val)
-      .optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      created: z.string(),
+      changed: z.string(),
+      publish: z.boolean(),
+      published: z.date(),
+      image: image().optional(),
+    }),
 });
 
 export const collections = {

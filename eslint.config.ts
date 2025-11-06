@@ -20,5 +20,5 @@ export default defineConfig([
     language: "css/css",
     extends: ["css/recommended"],
   },
-  globalIgnores([".astro/**/*"], "Ignore Build Directory"),
+  globalIgnores([".astro/**/*", "dist/"], "Ignore Build Directory"),
 ]);
