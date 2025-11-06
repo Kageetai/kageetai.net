@@ -12,6 +12,27 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/content/**/attachments/*.{png,jpg,jpeg,webp,gif}",
 );
 
+// Helper to extract first image from markdown content
+function extractFirstImage(markdownContent: string): string | undefined {
+  // Match markdown image syntax: ![alt](path)
+  const markdownImageRegex = /!\[.*?\]\((.*?)\)/;
+  const match = markdownContent.match(markdownImageRegex);
+
+  if (match && match[1]) {
+    return match[1];
+  }
+
+  // Also try to match HTML img tags as fallback
+  const htmlImageRegex = /<img[^>]+src=["']([^"']+)["']/;
+  const htmlMatch = markdownContent.match(htmlImageRegex);
+
+  if (htmlMatch && htmlMatch[1]) {
+    return htmlMatch[1];
+  }
+
+  return undefined;
+}
+
 // Helper to resolve image paths
 async function resolveImage(imagePath: string | undefined) {
   if (!imagePath) return undefined;
@@ -36,10 +57,23 @@ async function resolveImage(imagePath: string | undefined) {
 
 // Resolve images for all content
 const contentWithImages = await Promise.all(
-  content.map(async (post) => ({
-    ...post,
-    resolvedImage: await resolveImage(post.data.image),
-  })),
+  content.map(async (post) => {
+    // Try frontmatter image first
+    let resolvedImage = await resolveImage(post.data.image);
+
+    // Fallback to first image in content if no frontmatter image
+    if (!resolvedImage) {
+      const firstImagePath = extractFirstImage(post.body);
+      if (firstImagePath) {
+        resolvedImage = await resolveImage(firstImagePath);
+      }
+    }
+
+    return {
+      ...post,
+      resolvedImage,
+    };
+  }),
 );
 ---
 
