@@ -1,13 +1,12 @@
 ---
 created: 2025-09-01T22:32+02:00
-changed: 2025-11-05T09:58+01:00
+changed: 2025-11-06T17:12+01:00
 image: "[N64 box art](./attachments/Mystical%20Ninja%20Starring%20Goemon-1756799960028.webp)"
 played: 2025-09-21
 publish: true
 published: 2025-09-30
+summary: Nostalgia is a Liar
 ---
-  
-> Nostalgia is a Liar  
   
 Recently, while waiting for a late-night bus after a day out with friends, we talked about old animes and games we played or watched as kids. Sharing these memories is always interesting. As a kid, I didn't watch as many animes as I do now, apart from the obligatory *Dragon Ball*. So, I shared my memories of a niche Nintendo 64 game: *Mystical Ninja Starring Goemon*.  
   
