@@ -1,21 +1,59 @@
 import { defineCollection, z } from "astro:content";
 import { glob, type ParseDataOptions } from "astro/loaders";
+import type { ImageMetadata } from "astro:assets";
 
 // Helper function to generate title from filename
 const generateTitleFromFilename = (path?: string) =>
   path?.split("/").pop()?.replace(".md", "");
 
-// Helper function to extract image path from markdown link syntax
+// Helper function to extract image path from markdown link or wiki-link syntax
 const extractImagePath = (
   markdownLink: string | undefined,
 ): string | undefined => {
   if (!markdownLink) return undefined;
-  const match = markdownLink.match(/\[.*?]\((.*?)\)/);
-  return match?.[1];
+
+  // Try wiki-link format: [[filename]]
+  const wikiMatch = markdownLink.match(/\[\[(.+?)\]\]/);
+  if (wikiMatch?.[1]) {
+    return `./attachments/${wikiMatch[1]}`;
+  }
+
+  // Try markdown link format: [text](path)
+  const mdMatch = markdownLink.match(/\[.*?]\((.*?)\)/);
+  return mdMatch?.[1];
 };
 
-// Custom glob loader that adds title from filename if missing
-function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
+// Import all images from content directory
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/content/**/attachments/*.{png,jpg,jpeg,webp,gif}",
+);
+
+// Helper to resolve image paths
+async function resolveImage(
+  imagePath: string | undefined,
+): Promise<ImageMetadata | undefined> {
+  if (!imagePath) return undefined;
+
+  // Handle relative paths like ./attachments/image.webp
+  const normalizedPath = imagePath.startsWith("./")
+    ? `/src/content/${imagePath.substring(2)}`
+    : imagePath;
+
+  // Try to find matching image
+  for (const [path, imageImport] of Object.entries(images)) {
+    if (
+      path.endsWith(decodeURIComponent(normalizedPath.split("/").pop() || ""))
+    ) {
+      const image = await imageImport();
+      return image.default;
+    }
+  }
+
+  return undefined;
+}
+
+// Custom glob loader that adds title from filename if missing and resolves images
+function globWithTitleAndImageFallback(options: Parameters<typeof glob>[0]) {
   const loader = glob(options);
   const originalLoad = loader.load;
 
@@ -29,6 +67,21 @@ function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
         if (!data.title) {
           data.title = generateTitleFromFilename(entry.filePath);
         }
+
+        // Resolve image from frontmatter before parsing
+        const frontmatterImage = data.image as string | undefined;
+        if (frontmatterImage) {
+          // Extract path from markdown link format if needed
+          const imagePath =
+            extractImagePath(frontmatterImage) || frontmatterImage;
+          const resolvedImage = await resolveImage(imagePath);
+
+          if (resolvedImage) {
+            // Replace the string with resolved ImageMetadata before parsing
+            data.image = resolvedImage;
+          }
+        }
+
         return parseData(entry);
       },
       ...rest,
@@ -38,7 +91,7 @@ function globWithTitleFallback(options: Parameters<typeof glob>[0]) {
 }
 
 const games = defineCollection({
-  loader: globWithTitleFallback({
+  loader: globWithTitleAndImageFallback({
     pattern: "**/*.md",
     base: "./src/content/Games",
   }),
@@ -48,11 +101,12 @@ const games = defineCollection({
     changed: z.string(),
     publish: z.boolean(),
     related: z.string().optional(),
+    image: z.any().optional(),
   }),
 });
 
 const projects = defineCollection({
-  loader: globWithTitleFallback({
+  loader: globWithTitleAndImageFallback({
     pattern: "**/*.md",
     base: "./src/content/Projects",
   }),
@@ -63,12 +117,12 @@ const projects = defineCollection({
     publish: z.boolean(),
     summary: z.string().optional(),
     url: z.string().url().optional(),
-    image: z.string().optional(),
+    image: z.any().optional(),
   }),
 });
 
 const content = defineCollection({
-  loader: globWithTitleFallback({
+  loader: globWithTitleAndImageFallback({
     pattern: "**/*.md",
     base: "./src/content",
   }),
@@ -78,10 +132,7 @@ const content = defineCollection({
     changed: z.string(),
     publish: z.boolean(),
     published: z.date(),
-    image: z
-      .string()
-      .transform((val) => extractImagePath(val) || val)
-      .optional(),
+    image: z.any().optional(),
   }),
 });
 
