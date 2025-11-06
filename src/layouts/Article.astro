@@ -25,7 +25,7 @@ const { title, summary, published } = Astro.props;
           <li>
             <Calendar size={18} stroke-width={1} />
             <time datetime={published.toISOString()}>
-              {new Date(published).toLocaleDateString()}
+              {published.toLocaleDateString()}
             </time>
           </li>
 

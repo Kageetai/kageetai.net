@@ -41,38 +41,36 @@ const formatter = new Intl.DateTimeFormat();
     {
       content
         .sort((a, b) => b.data.published.getTime() - a.data.published.getTime())
-        .map(({ data, id }) => {
-          const published = formatter.format(data.published);
+        .map(({ data, id }) => (
+          <li>
+            <a href={id}>
+              <article>
+                {data.image && (
+                  <Image src={data.image} alt={data.title} width={400} />
+                )}
 
-          return (
-            <li>
-              <a href={id}>
-                <article>
-                  {data.image && (
-                    <Image src={data.image} alt={data.title} width={400} />
-                  )}
+                <header>
+                  <h1>{data.title}</h1>
+                </header>
 
-                  <header>
-                    <h1>{data.title}</h1>
-                  </header>
+                <aside>
+                  <small>
+                    <Calendar
+                      size={16}
+                      stroke-width={1}
+                      style="vertical-align: text-top"
+                    />
+                    <time datetime={data.published.toISOString()}>
+                      {formatter.format(data.published)}
+                    </time>
+                  </small>
 
-                  <aside>
-                    <small>
-                      <Calendar
-                        size={16}
-                        stroke-width={1}
-                        style="vertical-align: text-top"
-                      />
-                      <time datetime={published}>{published}</time>
-                    </small>
-
-                    <p>{data.summary || <>&nbsp;</>}</p>
-                  </aside>
-                </article>
-              </a>
-            </li>
-          );
-        })
+                  <p>{data.summary || <>&nbsp;</>}</p>
+                </aside>
+              </article>
+            </a>
+          </li>
+        ))
     }
   </ul>
 </BaseLayout>
