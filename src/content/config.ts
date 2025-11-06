@@ -72,6 +72,8 @@ const games = defineCollection({
       created: z.string(),
       changed: z.string(),
       publish: z.boolean(),
+      published: z.date(),
+      summary: z.string().optional(),
       related: z.string().optional(),
       image: image().optional(),
     }),
@@ -88,6 +90,7 @@ const projects = defineCollection({
       created: z.string(),
       changed: z.string(),
       publish: z.boolean(),
+      published: z.date(),
       summary: z.string().optional(),
       url: z.string().url().optional(),
       image: image().optional(),
@@ -107,6 +110,7 @@ const content = defineCollection({
       publish: z.boolean(),
       published: z.date(),
       image: image().optional(),
+      summary: z.string().optional(),
     }),
 });
 

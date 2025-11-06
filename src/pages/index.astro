@@ -41,36 +41,36 @@ const formatter = new Intl.DateTimeFormat();
     {
       content
         .sort((a, b) => b.data.published.getTime() - a.data.published.getTime())
-        .map((post) => {
-          const published = formatter.format(post.data.published);
+        .map(({ data, id }) => (
+          <li>
+            <a href={id}>
+              <article>
+                {data.image && (
+                  <Image src={data.image} alt={data.title} width={400} />
+                )}
 
-          return (
-            <li>
-              <a href={post.id}>
-                <article>
-                  {post.data.image && (
-                    <Image
-                      src={post.data.image}
-                      alt={post.data.title}
-                      width={400}
+                <header>
+                  <h1>{data.title}</h1>
+                </header>
+
+                <aside>
+                  <small>
+                    <Calendar
+                      size={16}
+                      stroke-width={1}
+                      style="vertical-align: text-top"
                     />
-                  )}
+                    <time datetime={data.published.toISOString()}>
+                      {formatter.format(data.published)}
+                    </time>
+                  </small>
 
-                  <header>
-                    <h1>{post.data.title}</h1>
-
-                    <div>
-                      <small>
-                        <Calendar size={14} stroke-width={1} />
-                        {published}
-                      </small>
-                    </div>
-                  </header>
-                </article>
-              </a>
-            </li>
-          );
-        })
+                  <p>{data.summary || <>&nbsp;</>}</p>
+                </aside>
+              </article>
+            </a>
+          </li>
+        ))
     }
   </ul>
 </BaseLayout>
@@ -85,11 +85,12 @@ const formatter = new Intl.DateTimeFormat();
     gap: 1rem;
   }
 
-  a:has(> article) {
+  article {
     display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     height: 100%;
-    align-items: flex-end;
-    border: 1px solid;
+    border: 2px solid;
     border-radius: var(--radius);
     overflow: hidden;
 
@@ -107,14 +108,22 @@ const formatter = new Intl.DateTimeFormat();
       aspect-ratio: 4 / 3;
       object-fit: cover;
       transition: transform 0.5s ease-in-out;
+      margin-bottom: auto;
+    }
+
+    header,
+    aside {
+      padding: 1rem;
     }
 
     h1 {
-      min-height: 3.5em;
+      margin: 0;
     }
 
-    header {
-      padding: 1rem;
+    aside > p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 </style>
