@@ -6,16 +6,15 @@ import { Calendar } from "@lucide/astro";
 
 const content = await getCollection("content");
 const formatter = new Intl.DateTimeFormat();
+const description =
+  "Ramblings, musing and the likes. Trying to practice writing and perhaps build a digital garden or blog here.";
 ---
 
-<BaseLayout
-  description="Ramblings, musing and the likes. Trying to practice writing and perhaps build a digital garden or blog here."
->
+<BaseLayout description={description}>
   <h1>Kageetai.net</h1>
 
   <blockquote>
-    Ramblings, musing and the likes. Trying to practice writing and perhaps
-    build a digital garden or blog here.
+    {description}
   </blockquote>
 
   <p>
