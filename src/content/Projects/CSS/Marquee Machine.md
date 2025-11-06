@@ -1,9 +1,8 @@
 ---
 created: 2024-07-31T14:44+02:00
-changed: 2025-11-05T09:58+01:00
+changed: 2025-11-06T17:13+01:00
 publish: true
 published: 2024-07-31
-summary: "We recently had a little hour-long mini hackathon at my work, where we had one hour to develop anything to a specific topic and for this first iteration the topic was: **90s websites**!"
 url: https://codepen.io/Kageetai/pen/vYqGGLp
 ---
   
