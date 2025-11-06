@@ -14,7 +14,7 @@
     "@astrojs/mdx": "^4.3.9",
     "@lucide/astro": "^0.552.0",
     "astro": "^5.15.3",
-    "sharp": "^0.34.4"
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@eslint/css": "^0.14.1",
