@@ -1,4 +1,6 @@
 ---
+import "../styles/glass3d.css";
+
 interface Props {
   title?: string;
   description?: string;
@@ -22,15 +24,18 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
   </head>
   <body>
     <slot />
+
+    <footer>© Kageetai.net {new Date().getFullYear()}</footer>
   </body>
 </html>
 
 <style is:global>
   :root {
     color-scheme: light dark;
-    --color-background: light-dark(#efedea, #151715);
+    --color-background: light-dark(#efedea, #151716);
     --color-foreground: light-dark(#333b3c, #efefec);
-    --color-interactive: light-dark(#275c4e, #a5e4c8);
+    --color-interactive: light-dark(#275c4e, #a5e4d1);
+    --color-border: rgba(from var(--color-interactive) r g b / 0.55);
     --radius: 0.5rem;
   }
 
@@ -58,7 +63,6 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
     padding: 2rem;
     background-color: var(--color-background);
     color: var(--color-foreground);
-    border-color: var(--color-foreground);
   }
 
   img {
@@ -85,5 +89,9 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
     border-left: 1px solid;
     margin-inline-start: 0;
     padding-inline-start: 20px;
+  }
+
+  footer {
+    font-size: 0.8rem;
   }
 </style>
