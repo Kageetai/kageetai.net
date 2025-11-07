@@ -7,13 +7,16 @@ import eslintPluginAstro from "eslint-plugin-astro";
 
 export default defineConfig([
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx,astro}"],
+    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     plugins: { js },
     extends: ["js/recommended"],
     languageOptions: { globals: globals.browser },
   },
   tseslint.configs.recommended,
-  eslintPluginAstro.configs.recommended,
+  ...eslintPluginAstro.configs.recommended.map((config) => ({
+    ...config,
+    files: config.files || ["**/*.astro"],
+  })),
   {
     files: ["**/*.css"],
     plugins: { css },
