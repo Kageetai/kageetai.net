@@ -69,6 +69,12 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
   a {
     text-decoration: none;
     color: var(--color-interactive);
+
+    &[href^="http"]:after {
+      content: " ↗";
+      font-size: 0.8em;
+      vertical-align: top;
+    }
   }
 
   a:hover {
