@@ -24,6 +24,7 @@ const { title, summary, published } = Astro.props;
         <ul>
           <li>
             <Calendar size={18} stroke-width={1} />
+
             <time datetime={published.toISOString()}>
               {published.toLocaleDateString()}
             </time>
@@ -33,6 +34,7 @@ const { title, summary, published } = Astro.props;
             summary && (
               <li>
                 <FileText size={18} stroke-width={1} />
+
                 {summary}
               </li>
             )
@@ -60,7 +62,7 @@ const { title, summary, published } = Astro.props;
         display: flex;
         gap: 0.5rem;
         padding: 0.25rem 0.5rem;
-        border: 1px solid;
+        border: 1px solid var(--color-border);
         border-radius: var(--radius);
 
         > * {
@@ -69,6 +71,7 @@ const { title, summary, published } = Astro.props;
 
         > *:first-child {
           margin-top: 0.2rem;
+          color: var(--color-interactive);
         }
       }
     }
