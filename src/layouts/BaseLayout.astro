@@ -70,7 +70,7 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
     text-decoration: none;
     color: var(--color-interactive);
 
-    &[href^="http"]:after {
+    &[href^="http"]:not(:has(> img)):after {
       content: " ↗";
       font-size: 0.8em;
       vertical-align: top;
