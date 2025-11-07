@@ -42,7 +42,9 @@ const { title, summary, published } = Astro.props;
     </header>
   </article>
 
-  <slot />
+  <main>
+    <slot />
+  </main>
 </BaseLayout>
 
 <style>

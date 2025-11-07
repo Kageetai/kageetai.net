@@ -11,70 +11,76 @@ const description =
 ---
 
 <BaseLayout description={description}>
-  <h1>Kageetai.net</h1>
+  <main>
+    <h1>Kageetai.net</h1>
 
-  <blockquote>
-    {description}
-  </blockquote>
+    <blockquote>
+      {description}
+    </blockquote>
 
-  <p>
-    My curiosity and passion for frontend development always keeps me trying out
-    new technologies and features, the experience with I want to try to share
-    here.
-  </p>
+    <p>
+      My curiosity and passion for frontend development always keeps me trying
+      out new technologies and features, the experience with I want to try to
+      share here.
+    </p>
 
-  <p>
-    Check my first articles below. Other projects can also be found on my <a
-      href="https://github.com/Kageetai">GitHub profile</a
-    >.
-  </p>
+    <p>
+      Check my first articles below. Other projects can also be found on my <a
+        href="https://github.com/Kageetai">GitHub profile</a
+      >.
+    </p>
 
-  <a href="https://skillicons.dev"
-    ><img
-      src="https://skillicons.dev/icons?i=js,ts,html,css,react,nodejs,npm,bash,git,githubactions,idea,md,figma,obsidian,aws&perline=15"
-      alt="My Skills"
-    /></a
-  >
+    <a href="https://skillicons.dev"
+      ><img
+        src="https://skillicons.dev/icons?i=js,ts,html,css,react,nodejs,npm,bash,git,githubactions,idea,md,figma,obsidian,aws&perline=15"
+        alt="My Skills"
+      /></a
+    >
+  </main>
 
   <h2>Posts</h2>
 
-  <ul>
-    {
-      content
-        .sort((a, b) => b.data.published.getTime() - a.data.published.getTime())
-        .map(({ data, id }) => (
-          <li>
-            <a href={id}>
-              <article>
-                {data.image && (
-                  <Image src={data.image} alt={data.title} width={400} />
-                )}
+  <nav>
+    <ul>
+      {
+        content
+          .sort(
+            (a, b) => b.data.published.getTime() - a.data.published.getTime(),
+          )
+          .map(({ data, id }) => (
+            <li>
+              <a href={id}>
+                <article>
+                  {data.image && (
+                    <Image src={data.image} alt={data.title} width={400} />
+                  )}
 
-                <header>
-                  <h1>{data.title}</h1>
-                </header>
+                  <header>
+                    <h1>{data.title}</h1>
+                  </header>
 
-                <aside>
-                  <small>
-                    <Calendar
-                      size={16}
-                      stroke-width={1}
-                      style="vertical-align: text-top"
-                    />
-                    <time datetime={data.published.toISOString()}>
-                      {formatter.format(data.published)}
-                    </time>
-                  </small>
+                  <aside>
+                    <small>
+                      <Calendar
+                        size={16}
+                        stroke-width={1}
+                        style="vertical-align: text-top"
+                      />
+                      <time datetime={data.published.toISOString()}>
+                        {formatter.format(data.published)}
+                      </time>
+                    </small>
 
-                  <p>{data.summary || <>&nbsp;</>}</p>
-                </aside>
-              </article>
-            </a>
-          </li>
-        ))
-    }
-  </ul>
-</BaseLayout>
+                    <p>{data.summary || <>&nbsp;</>}</p>
+                  </aside>
+                </article>
+              </a>
+            </li>
+          ))
+      }
+    </ul>
+  </nav></BaseLayout
+>
 
 <style>
   ul {
@@ -127,4 +133,8 @@ const description =
       text-overflow: ellipsis;
     }
   }
+
+  //a:has(article) {
+  //  text-decoration: none;
+  //}
 </style>
