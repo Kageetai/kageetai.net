@@ -60,7 +60,7 @@ const description =
                       <h1>{data.title}</h1>
                     </header>
 
-                    <main>{data.summary}</main>
+                    <p>{data.summary}</p>
 
                     <aside>
                       <small>
@@ -136,10 +136,11 @@ const description =
       line-height: 1.25;
     }
 
-    main {
+    p {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      min-height: 1.6em;
     }
   }
 </style>
