@@ -11,10 +11,10 @@
     "lint": "astro check && eslint && prettier . --check"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.9",
+    "@astrojs/mdx": "^4.3.10",
     "@justinribeiro/lite-youtube": "^1.9.0",
-    "@lucide/astro": "^0.552.0",
-    "astro": "^5.15.3",
+    "@lucide/astro": "^0.553.0",
+    "astro": "^5.15.5",
     "astro-matomo": "^1.9.0",
     "sharp": "^0.34.5",
     "unist-util-visit": "^5.0.0"
