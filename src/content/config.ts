@@ -51,7 +51,7 @@ function globWithTitleAndImageFallback(options: Parameters<typeof glob>[0]) {
           // Convert the path to be relative to the Markdown file
           // Astro's image() helper will handle the actual resolution
           data.image =
-            imagePath || (data.assetImports as Array<string | undefined>)[0];
+            imagePath || (data.assetImports as string[] | undefined)?.[0];
         }
 
         return parseData(entry);
