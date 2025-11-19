@@ -30,6 +30,10 @@ const description =
       >.
     </p>
 
+    <p>
+      Or contact me on <a href="https://mastodon.social/@kageetai">Mastodon</a>
+    </p>
+
     <a href="https://skillicons.dev"
       ><img
         src="https://skillicons.dev/icons?i=js,ts,html,css,react,nodejs,npm,bash,git,githubactions,idea,md,figma,obsidian,aws&perline=15"
@@ -137,10 +141,14 @@ const description =
     }
 
     p {
+      /* Safari & Firefox */
+      -webkit-line-clamp: 2;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
       overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      min-height: 1.6em;
+
+      /* Chromium */
+      line-clamp: 2;
     }
   }
 </style>
