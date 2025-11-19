@@ -12,12 +12,12 @@ const extractImagePath = (
   if (!markdownLink) return undefined;
 
   // Try wiki-link format: [[filename]]
-  const wikiMatch = markdownLink.match(/\[\[(.+?)\]\]/);
+  const wikiMatch = markdownLink.match(/\[\[(.+?)]]/);
   if (wikiMatch?.[1]) {
     return `./attachments/${decodeURIComponent(wikiMatch[1])}`;
   }
 
-  // Try markdown link format: [text](path)
+  // Try Markdown link format: [text](path)
   const mdMatch = markdownLink.match(/\[.*?]\((.*?)\)/);
   if (mdMatch?.[1]) {
     // Decode URL-encoded characters (e.g., %20 -> space)
@@ -37,20 +37,21 @@ function globWithTitleAndImageFallback(options: Parameters<typeof glob>[0]) {
       parseData: async <TData extends Record<string, unknown>>(
         entry: ParseDataOptions<TData>,
       ) => {
-        // Add title from filename if not present
+        // Add title from file name if not present
         const data = entry.data as Record<string, unknown>;
         if (!data.title) {
           data.title = generateTitleFromFilename(entry.filePath);
         }
 
-        // Extract image path from markdown link format if needed
+        // Extract image path from Markdown link format if needed
         const frontmatterImage = data.image as string | undefined;
         if (frontmatterImage) {
           const imagePath =
             extractImagePath(frontmatterImage) || frontmatterImage;
-          // Convert the path to be relative to the markdown file
+          // Convert the path to be relative to the Markdown file
           // Astro's image() helper will handle the actual resolution
-          data.image = imagePath;
+          data.image =
+            imagePath || (data.assetImports as Array<string | undefined>)[0];
         }
 
         return parseData(entry);
