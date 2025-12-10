@@ -1,6 +1,6 @@
 ---
 created: 2025-11-07T09:28+01:00
-changed: 2025-12-10T13:39+01:00
+changed: 2025-12-10T14:25+01:00
 image: "[Astro-based web page](./attachments/new%20blog,%20new%20stack-1763042571840.webp)"
 publish: true
 published: 2025-12-02
@@ -33,9 +33,9 @@ This is how the page looked after the above process:
 Certainly not bad for a basic setup and being able to publish Obsidian notes relatively easily.  
 I did keep this for a while, but always with the desire to only use it as a base and at some point replace it.  
   
-## Developer's Pride  
+## Developers Pride  
   
-Even if that time never really came, I kept some notes on other options I stumbled upon in the meantime. One of those that made the next step possible, was the [Obsidian plugin Enveloppe](https://enveloppe.ovh/). Instead of pushing from one repository to another, this plugin directly talks to the public repository directly from within Obsidian, via the GitHub API.  
+Even if that time never really came, I kept some notes on other options I stumbled upon in the meantime. One of those that made the next step possible was the [Obsidian plugin Enveloppe](https://enveloppe.ovh/). Instead of pushing from one repository to another, this plugin talks to the public repository directly from within Obsidian, via the GitHub API.  
 Initially I wanted to avoid this approach to not have to rely on another plugin and instead just combine this publishing flow with my backup flow to my private GitHub repository. But after trying it out once, I realised it takes away a lot of the hassle, that I would have to do myself otherwise with a custom solution:  
   
 - converting Wikilinks into standard Markdown links and map them to the corresponding files: `[[link]]` -> `[](link)` (which was more complexities than I thought at first, e.g. what to do with identically named notes in different folders?)  
@@ -43,13 +43,13 @@ Initially I wanted to avoid this approach to not have to rely on another plugin 
 - map file paths to a designated folder structure  
 - … and other things I probably couldn't even think of yet  
   
-So with all of this (and more) taken care of by the Envelope plugin, I could get back to the more fun part of making a website (at least to me): Working on the actual page and design!  
-I just set up Envelope plugin to push to my secondary public repository (after testing with another temporary repository) and started working on rendering these Markdown files with a framework of my choice.  
+So with all of this (and more) taken care of by the Enveloppe plugin, I could get back to the more fun part of making a website (at least to me): Working on the actual page and design!  
+I just set up Enveloppe plugin to push to my secondary public repository (after testing with another temporary repository) and started working on rendering these Markdown files with a framework of my choice.  
 For that kind of choice there are just as many options out there. I won't go over those here in detail, basically any frontend framework would do the job. I chose [Astro](https://astro.build/) for my purpose here, as it's suited well for static content like blogs and supports many modern web features and technologies.  
   
 ## Building with Astro  
   
-Setting up Astro for this project was as easy as following their basic quick-start guide and setting up Envelope to push the converted Markdown files to the correct source folder for Astro to find the files. One trickier thing was to find the right format for internal links, to articles and attachments. The settings for Envelope allow a lot of different configurations there, which I had to align with what Astro would expect to parse internally. This was a bit trickier at first and I had to write some [short helper functions](https://github.com/Kageetai/kageetai.net/blob/main/src/content/config.ts#L31) to help parse the links, especially to retrieve image banners to render for each post.  
+Setting up Astro for this project was as easy as following their basic quick-start guide and setting up Enveloppe to push the converted Markdown files to the correct source folder for Astro to find the files. One trickier thing was to find the right format for internal links, to articles and attachments. The settings for Enveloppe allow for extensive configuration, which I had to align with Astro's routing expectations. This was a bit trickier at first and I had to write some [short helper functions](https://github.com/Kageetai/kageetai.net/blob/main/src/content/config.ts#L31) to help parse the links, especially to retrieve image banners to render for each post.  
 The main part of that happens inside the standard Astro configuration, where I am fetching the Markdown files and parsing them into blog posts, while also making sure titles and images are parsed and generated. If curious, the code is here:  
   
 [kageetai.net/src/content/config.ts at main · Kageetai/kageetai.net](https://github.com/Kageetai/kageetai.net/blob/main/src/content/config.ts#L31-L63)  
@@ -76,3 +76,4 @@ After some testing and tweaking with Google Lighthouse, I managed to get a `100`
   
 I suppose it's okay to be just a little proud of that. Let's see how long it lasts! ;)  
 In the meantime, feel free to [contact me](https://mastodon.social/@kageetai) with suggestions, share your own blog setups or anything.  
+  
