@@ -33,7 +33,7 @@ This is how the page looked after the above process:
 Certainly not bad for a basic setup and being able to publish Obsidian notes relatively easily.  
 I did keep this for a while, but always with the desire to only use it as a base and at some point replace it.  
   
-## Developers Pride  
+## Developer's Pride  
   
 Even if that time never really came, I kept some notes on other options I stumbled upon in the meantime. One of those that made the next step possible, was the [Obsidian plugin Enveloppe](https://enveloppe.ovh/). Instead of pushing from one repository to another, this plugin directly talks to the public repository directly from within Obsidian, via the GitHub API.  
 Initially I wanted to avoid this approach to not have to rely on another plugin and instead just combine this publishing flow with my backup flow to my private GitHub repository. But after trying it out once, I realised it takes away a lot of the hassle, that I would have to do myself otherwise with a custom solution:  
