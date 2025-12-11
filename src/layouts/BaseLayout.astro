@@ -1,5 +1,6 @@
 ---
 import "../styles/glass3d.css";
+import ParticleBackground from "./ParticleBackground.astro";
 
 interface Props {
   title?: string;
@@ -55,19 +56,23 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
     <!-- End Matomo Code -->
   </head>
   <body>
-    <slot />
+    <ParticleBackground>
+      <div class="container">
+        <slot />
 
-    <footer>© Kageetai.net {new Date().getFullYear()}</footer>
+        <footer>© Kageetai.net {new Date().getFullYear()}</footer>
+      </div>
+    </ParticleBackground>
   </body>
 </html>
 
 <style is:global>
   :root {
     color-scheme: light dark;
-    --color-background: light-dark(#efedea, #151716);
+    --color-background: light-dark(#efedea88, #15171688);
     --color-foreground: light-dark(#333b3c, #efefec);
     --color-interactive: light-dark(#275c4e, #a5e4d1);
-    --color-border: rgba(from var(--color-interactive) r g b / 0.55);
+    --color-border: rgba(from var(--color-interactive) r g b / 0.5);
     --radius: 0.5rem;
   }
 
@@ -89,11 +94,12 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
     line-height: 1.6;
   }
 
-  body {
+  .container {
     max-width: 80ch;
     margin: 0 auto;
     padding: 2rem;
     background-color: var(--color-background);
+    backdrop-filter: blur(5px);
     color: var(--color-foreground);
   }
 
