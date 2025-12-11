@@ -12,7 +12,7 @@
 </style>
 
 <script>
-  {
+  (() => {
     const canvasElement = document.getElementById(
       "canvas",
     ) as HTMLCanvasElement | null;
@@ -271,5 +271,5 @@
     // Initialize and start
     init();
     animate();
-  }
+  })();
 </script>
