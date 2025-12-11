@@ -223,8 +223,9 @@
       canvas.height = height;
 
       // Scale existing particle positions proportionally
-      const scaleX = width / oldWidth;
-      const scaleY = height / oldHeight;
+      // with safeguard to prevent division by zero
+      const scaleX = oldWidth > 0 ? width / oldWidth : 1;
+      const scaleY = oldHeight > 0 ? height / oldHeight : 1;
 
       particles.forEach((particle) => {
         particle.x *= scaleX;
