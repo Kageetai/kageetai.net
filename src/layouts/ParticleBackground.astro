@@ -20,7 +20,7 @@
 </style>
 
 <script>
-  const canvas = document.getElementById("can vas") as HTMLCanvasElement | null;
+  const canvas = document.getElementById("canvas") as HTMLCanvasElement | null;
   const ctx = canvas?.getContext("2d");
 
   // get custom property
@@ -218,32 +218,44 @@
   }
 
   // Event Listeners
-  window.addEventListener("resize", init);
-
-  window.addEventListener("mousemove", (e) => {
+  const handleResize = init;
+  const handleMouseMove = (e: MouseEvent) => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
-  });
-
-  // Touch support
-  window.addEventListener("touchmove", (e) => {
-    mouse.x = e.touches[0].clientX;
-    mouse.y = e.touches[0].clientY;
-  });
-
-  window.addEventListener("mousedown", () => {
+  };
+  const handleTouchMove = (e: TouchEvent) => {
+    if (e.touches.length > 0) {
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    }
+  };
+  const handleMouseDown = () => {
     mouse.isDown = true;
-    // Trigger bounce
     particles.forEach((p) => p.bounce());
-  });
-
-  window.addEventListener("mouseup", () => {
+  };
+  const handleMouseUp = () => {
     mouse.isDown = false;
-  });
+  };
+
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("mousemove", handleMouseMove);
+  window.addEventListener("touchmove", handleTouchMove);
+  window.addEventListener("mousedown", handleMouseDown);
+  window.addEventListener("mouseup", handleMouseUp);
+
+  document.addEventListener(
+    "astro:before-page-load",
+    () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+    },
+    { once: true },
+  );
 
   // Initialize and start
-  if (canvas && ctx) {
-    init();
-    animate();
-  }
+  init();
+  animate();
 </script>
