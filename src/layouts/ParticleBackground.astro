@@ -1,0 +1,312 @@
+<canvas id="canvas"></canvas>
+
+<slot />
+
+<style>
+  canvas {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+</style>
+
+<script>
+  (() => {
+    const canvasElement = document.getElementById(
+      "canvas",
+    ) as HTMLCanvasElement | null;
+    const context = canvasElement?.getContext("2d");
+
+    // Early exit if canvas or context is not available
+    if (!canvasElement || !context) {
+      return;
+    }
+
+    // Respect user's motion preferences for accessibility
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    // Type assertion: we've confirmed these are non-null
+    const canvas = canvasElement as HTMLCanvasElement;
+    const ctx = context as CanvasRenderingContext2D;
+
+    // get custom property
+    const element = document.documentElement;
+    const style = window.getComputedStyle(element);
+    const colorInteractive = style
+      .getPropertyValue("--color-interactive")
+      .trim();
+
+    let width: number, height: number;
+    const particles: Particle[] = [];
+
+    // Configuration
+    const particleDensity = 0.00015; // Particles per square pixel (adjust for density)
+    const minParticles = 50; // Minimum particles for very small screens
+    const maxParticles = 200; // Maximum particles for very large screens
+    const connectionDistance = 100; // Distance to draw lines
+    const mouseRadius = 150; // Radius of mouse influence
+    const mouseForce = 40; // Strength of repulsion
+    const friction = 0.92; // Damping for bounce impulse
+    const returnSpeed = 0.05; // Speed returning to original position
+    const clickEffectRadius = 300; // Radius for click bounce effect
+    const particleVelocityMax = 0.5;
+    const particleSizeMin = 1;
+    const particleSizeRange = 2;
+    const particleAlphaMin = 0.2;
+    const particleAlphaRange = 0.5;
+    const driftFactor = 0.2; // Multiplier for natural drift speed
+    const bouncePowerBase = 5; // Base power for bounce effect
+    const bouncePowerRange = 5; // Random range added to bounce power
+    const connectionLineWidth = 0.5; // Width of connection lines
+    const connectionOpacityFactor = 0.2; // Opacity multiplier for connections
+
+    /**
+     * Calculate particle count based on screen area to maintain consistent visual density
+     */
+    function calculateParticleCount(width: number, height: number): number {
+      const area = width * height;
+      const count = Math.floor(area * particleDensity);
+      return Math.max(minParticles, Math.min(maxParticles, count));
+    }
+
+    // Mouse state
+    const mouse = {
+      x: -1000,
+      y: -1000,
+      isDown: false,
+    };
+
+    class Particle {
+      x: number;
+      y: number;
+      originX: number;
+      originY: number;
+      vx: number;
+      vy: number;
+      vxImpulse: number;
+      vyImpulse: number;
+      size: number;
+      color: CanvasFillStrokeStyles["fillStyle"];
+
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+
+        // Base "home" position (drifts slowly)
+        this.originX = this.x;
+        this.originY = this.y;
+
+        // Current velocity (Slower default movement)
+        this.vx = (Math.random() - 0.5) * particleVelocityMax;
+        this.vy = (Math.random() - 0.5) * particleVelocityMax;
+
+        // Bounce impulse velocity
+        this.vxImpulse = 0;
+        this.vyImpulse = 0;
+
+        this.size = Math.random() * particleSizeRange + particleSizeMin;
+        this.color = `rgba(from ${colorInteractive} r g b / ${Math.random() * particleAlphaRange + particleAlphaMin})`;
+      }
+
+      update() {
+        // 1. Natural Drift (Fluidity)
+        // Slowly change origin to simulate currents
+        this.originX += this.vx * driftFactor;
+        this.originY += this.vy * driftFactor;
+
+        // Wrap around screen
+        if (this.originX < 0) {
+          this.originX = width;
+          this.x = width; // Snap current position to avoid flying across screen
+        } else if (this.originX > width) {
+          this.originX = 0;
+          this.x = 0;
+        }
+
+        if (this.originY < 0) {
+          this.originY = height;
+          this.y = height;
+        } else if (this.originY > height) {
+          this.originY = 0;
+          this.y = 0;
+        }
+
+        // 2. Mouse Interaction (Repulsion)
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const distance = Math.hypot(dx, dy);
+
+        // Calculate target position based on forces
+        let targetX = this.originX;
+        let targetY = this.originY;
+
+        if (distance < mouseRadius) {
+          const forceDirectionX = dx / distance;
+          const forceDirectionY = dy / distance;
+          const force = (mouseRadius - distance) / mouseRadius;
+
+          // Push away from mouse
+          // The closer, the stronger the push
+          // Using mouseForce variable
+          const repulsionX = forceDirectionX * force * mouseForce * -1;
+          const repulsionY = forceDirectionY * force * mouseForce * -1;
+
+          targetX += repulsionX;
+          targetY += repulsionY;
+        }
+
+        // Smoothly interpolate current position to target position
+        // Using returnSpeed variable
+        this.x += (targetX - this.x) * returnSpeed;
+        this.y += (targetY - this.y) * returnSpeed;
+
+        // 3. Bounce Effect (Decay impulse)
+        this.x += this.vxImpulse;
+        this.y += this.vyImpulse;
+
+        // Using friction variable
+        this.vxImpulse *= friction;
+        this.vyImpulse *= friction;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+
+      bounce() {
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const distSq = dx * dx + dy * dy;
+
+        // Effect radius for click
+        if (distSq < clickEffectRadius * clickEffectRadius) {
+          const dist = Math.sqrt(distSq);
+          const angle = Math.atan2(dy, dx);
+          // Closer particles get pushed harder
+          const force = (clickEffectRadius - dist) / clickEffectRadius;
+
+          // Power for subtle bounce effect
+          const power = bouncePowerBase + Math.random() * bouncePowerRange;
+
+          this.vxImpulse = Math.cos(angle) * power * force;
+          this.vyImpulse = Math.sin(angle) * power * force;
+        }
+      }
+    }
+
+    function init() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+
+      const particleCount = calculateParticleCount(width, height);
+      particles.length = 0; // More efficient than creating a new array
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function handleResize() {
+      const oldWidth = width;
+      const oldHeight = height;
+
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+
+      // Scale existing particle positions proportionally
+      // with safeguard to prevent division by zero
+      const scaleX = oldWidth > 0 ? width / oldWidth : 1;
+      const scaleY = oldHeight > 0 ? height / oldHeight : 1;
+
+      particles.forEach((particle) => {
+        particle.x *= scaleX;
+        particle.y *= scaleY;
+        particle.originX *= scaleX;
+        particle.originY *= scaleY;
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      // 1. Update all particles
+      particles.forEach((p) => p.update());
+
+      // 2. Draw connections
+      ctx.lineWidth = connectionLineWidth;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p1 = particles[i];
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const distanceSq = dx * dx + dy * dy;
+
+          if (distanceSq < connectionDistance * connectionDistance) {
+            const distance = Math.sqrt(distanceSq);
+            const opacity = 1 - distance / connectionDistance;
+            ctx.strokeStyle = `rgba(from ${colorInteractive} r g b / ${opacity * connectionOpacityFactor})`;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // 3. Draw particles
+      particles.forEach((p) => p.draw());
+
+      requestAnimationFrame(animate);
+    }
+    // Event Listeners
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+      }
+    };
+    const handleMouseDown = () => {
+      mouse.isDown = true;
+      particles.forEach((p) => p.bounce());
+    };
+    const handleMouseUp = () => {
+      mouse.isDown = false;
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    document.addEventListener(
+      "astro:before-page-load",
+      () => {
+        window.removeEventListener("resize", handleResize);
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("touchmove", handleTouchMove);
+        window.removeEventListener("mousedown", handleMouseDown);
+        window.removeEventListener("mouseup", handleMouseUp);
+      },
+      { once: true },
+    );
+
+    // Initialize and start
+    init();
+    animate();
+  })();
+</script>
