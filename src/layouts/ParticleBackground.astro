@@ -26,9 +26,7 @@
   // get custom property
   const element = document.documentElement;
   const style = window.getComputedStyle(element);
-  const customInteractive = style
-    .getPropertyValue("--color-interactive")
-    .trim();
+  const colorInteractive = style.getPropertyValue("--color-interactive").trim();
 
   let width: number, height: number;
   let particles: Particle[] = [];
@@ -37,12 +35,12 @@
   const particleCount = 150; // Adjust for density
   const connectionDistance = 100; // Distance to draw lines
   const mouseRadius = 150; // Radius of mouse influence
-  const mouseForce = 0.05; // Strength of repulsion
-  const friction = 0.95; // Damping for velocity
-  const returnSpeed = 0.02; // Speed returning to original position
+  const mouseForce = 40; // Strength of repulsion (Updated to match current behavior)
+  const friction = 0.92; // Damping for bounce impulse (Updated to match current behavior)
+  const returnSpeed = 0.05; // Speed returning to original position (Updated to match current behavior)
 
   // Mouse state
-  let mouse = {
+  const mouse = {
     x: -1000,
     y: -1000,
     isDown: false,
@@ -77,8 +75,7 @@
       this.vy_impulse = 0;
 
       this.size = Math.random() * 2 + 1;
-      // this.color = `rgba(100, 200, 255, ${Math.random() * 0.5 + 0.2})`;
-      this.color = `rgba(from ${customInteractive} r g b / ${Math.random() * 0.5 + 0.2})`;
+      this.color = `rgba(from ${colorInteractive} r g b / ${Math.random() * 0.5 + 0.2})`;
     }
 
     update() {
@@ -105,9 +102,9 @@
       }
 
       // 2. Mouse Interaction (Repulsion)
-      let dx = mouse.x - this.x;
-      let dy = mouse.y - this.y;
-      let distance = Math.sqrt(dx * dx + dy * dy);
+      const dx = mouse.x - this.x;
+      const dy = mouse.y - this.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
 
       // Calculate target position based on forces
       let targetX = this.originX;
@@ -120,25 +117,26 @@
 
         // Push away from mouse
         // The closer, the stronger the push
-        // Reduced multiplier from 100 to 40 for subtle effect
-        const repulsionX = forceDirectionX * force * 40 * -1;
-        const repulsionY = forceDirectionY * force * 40 * -1;
+        // Using mouseForce variable
+        const repulsionX = forceDirectionX * force * mouseForce * -1;
+        const repulsionY = forceDirectionY * force * mouseForce * -1;
 
         targetX += repulsionX;
         targetY += repulsionY;
       }
 
       // Smoothly interpolate current position to target position
-      // Reduced from 0.1 to 0.05 for "less strong", more fluid movement
-      this.x += (targetX - this.x) * 0.05;
-      this.y += (targetY - this.y) * 0.05;
+      // Using returnSpeed variable
+      this.x += (targetX - this.x) * returnSpeed;
+      this.y += (targetY - this.y) * returnSpeed;
 
       // 3. Bounce Effect (Decay impulse)
       this.x += this.vx_impulse;
       this.y += this.vy_impulse;
 
-      this.vx_impulse *= 0.92; // Friction to slow down bounce
-      this.vy_impulse *= 0.92;
+      // Using friction variable
+      this.vx_impulse *= friction;
+      this.vy_impulse *= friction;
     }
 
     draw() {
@@ -149,18 +147,18 @@
     }
 
     bounce() {
-      let dx = this.x - mouse.x;
-      let dy = this.y - mouse.y;
-      let dist = Math.sqrt(dx * dx + dy * dy);
+      const dx = this.x - mouse.x;
+      const dy = this.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
 
       // Effect radius for click
       if (dist < 300) {
-        let angle = Math.atan2(dy, dx);
+        const angle = Math.atan2(dy, dx);
         // Closer particles get pushed harder
-        let force = (300 - dist) / 300;
+        const force = (300 - dist) / 300;
 
         // Reduced power for subtle effect (was 25 + random*10)
-        let power = 5 + Math.random() * 5;
+        const power = 5 + Math.random() * 5;
 
         this.vx_impulse = Math.cos(angle) * power * force;
         this.vy_impulse = Math.sin(angle) * power * force;
@@ -186,19 +184,19 @@
     // Draw connections first (so they are behind particles)
     ctx.lineWidth = 0.5;
     for (let i = 0; i < particles.length; i++) {
-      let p1 = particles[i];
+      const p1 = particles[i];
       p1.update();
 
       // Connect particles if close
       for (let j = i + 1; j < particles.length; j++) {
-        let p2 = particles[j];
-        let dx = p1.x - p2.x;
-        let dy = p1.y - p2.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
+        const p2 = particles[j];
+        const dx = p1.x - p2.x;
+        const dy = p1.y - p2.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < connectionDistance) {
           // Opacity based on distance
-          let opacity = 1 - distance / connectionDistance;
+          const opacity = 1 - distance / connectionDistance;
           ctx.strokeStyle = `rgba(100, 200, 255, ${opacity * 0.2})`;
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
