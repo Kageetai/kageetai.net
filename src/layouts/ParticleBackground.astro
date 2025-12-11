@@ -23,6 +23,11 @@
       return;
     }
 
+    // Respect user's motion preferences for accessibility
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
     // Type assertion: we've confirmed these are non-null
     const canvas = canvasElement as HTMLCanvasElement;
     const ctx = context as CanvasRenderingContext2D;
@@ -38,7 +43,7 @@
     let particles: Particle[] = [];
 
     // Configuration
-    const particleCount = 150; // Adjust for density
+    const particleCount = window.innerWidth < 900 ? 75 : 150; // Fewer particles on smaller screens
     const connectionDistance = 100; // Distance to draw lines
     const mouseRadius = 150; // Radius of mouse influence
     const mouseForce = 40; // Strength of repulsion
