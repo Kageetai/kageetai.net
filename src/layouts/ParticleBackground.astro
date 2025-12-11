@@ -40,9 +40,12 @@
       .trim();
 
     let width: number, height: number;
-    let particles: Particle[] = [];
+    const particles: Particle[] = [];
 
     // Configuration
+    const particleDensity = 0.00015; // Particles per square pixel (adjust for density)
+    const minParticles = 50; // Minimum particles for very small screens
+    const maxParticles = 200; // Maximum particles for very large screens
     const connectionDistance = 100; // Distance to draw lines
     const mouseRadius = 150; // Radius of mouse influence
     const mouseForce = 40; // Strength of repulsion
@@ -59,6 +62,15 @@
     const bouncePowerRange = 5; // Random range added to bounce power
     const connectionLineWidth = 0.5; // Width of connection lines
     const connectionOpacityFactor = 0.2; // Opacity multiplier for connections
+
+    /**
+     * Calculate particle count based on screen area to maintain consistent visual density
+     */
+    function calculateParticleCount(width: number, height: number): number {
+      const area = width * height;
+      const count = Math.floor(area * particleDensity);
+      return Math.max(minParticles, Math.min(maxParticles, count));
+    }
 
     // Mouse state
     const mouse = {
@@ -194,7 +206,7 @@
       canvas.width = width;
       canvas.height = height;
 
-      const particleCount = window.innerWidth < 900 ? 75 : 150;
+      const particleCount = calculateParticleCount(width, height);
       particles.length = 0; // More efficient than creating a new array
       for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
