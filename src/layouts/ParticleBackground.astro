@@ -13,10 +13,19 @@
 
 <script>
   {
-    const canvas = document.getElementById(
+    const canvasElement = document.getElementById(
       "canvas",
     ) as HTMLCanvasElement | null;
-    const ctx = canvas?.getContext("2d");
+    const context = canvasElement?.getContext("2d");
+
+    // Early exit if canvas or context is not available
+    if (!canvasElement || !context) {
+      return;
+    }
+
+    // Type assertion: we've confirmed these are non-null
+    const canvas = canvasElement as HTMLCanvasElement;
+    const ctx = context as CanvasRenderingContext2D;
 
     // get custom property
     const element = document.documentElement;
@@ -32,15 +41,20 @@
     const particleCount = 150; // Adjust for density
     const connectionDistance = 100; // Distance to draw lines
     const mouseRadius = 150; // Radius of mouse influence
-    const mouseForce = 40; // Strength of repulsion (Updated to match current behavior)
-    const friction = 0.92; // Damping for bounce impulse (Updated to match current behavior)
-    const returnSpeed = 0.05; // Speed returning to original position (Updated to match current behavior)
-    const clickEffectRadius = 300;
+    const mouseForce = 40; // Strength of repulsion
+    const friction = 0.92; // Damping for bounce impulse
+    const returnSpeed = 0.05; // Speed returning to original position
+    const clickEffectRadius = 300; // Radius for click bounce effect
     const particleVelocityMax = 0.5;
     const particleSizeMin = 1;
     const particleSizeRange = 2;
     const particleAlphaMin = 0.2;
     const particleAlphaRange = 0.5;
+    const driftFactor = 0.2; // Multiplier for natural drift speed
+    const bouncePowerBase = 5; // Base power for bounce effect
+    const bouncePowerRange = 5; // Random range added to bounce power
+    const connectionLineWidth = 0.5; // Width of connection lines
+    const connectionOpacityFactor = 0.2; // Opacity multiplier for connections
 
     // Mouse state
     const mouse = {
@@ -56,8 +70,8 @@
       originY: number;
       vx: number;
       vy: number;
-      vx_impulse: number;
-      vy_impulse: number;
+      vxImpulse: number;
+      vyImpulse: number;
       size: number;
       color: CanvasFillStrokeStyles["fillStyle"];
 
@@ -74,8 +88,8 @@
         this.vy = (Math.random() - 0.5) * particleVelocityMax;
 
         // Bounce impulse velocity
-        this.vx_impulse = 0;
-        this.vy_impulse = 0;
+        this.vxImpulse = 0;
+        this.vyImpulse = 0;
 
         this.size = Math.random() * particleSizeRange + particleSizeMin;
         this.color = `rgba(from ${colorInteractive} r g b / ${Math.random() * particleAlphaRange + particleAlphaMin})`;
@@ -83,9 +97,9 @@
 
       update() {
         // 1. Natural Drift (Fluidity)
-        // Slowly change origin to simulate currents (Reduced multiplier)
-        this.originX += this.vx * 0.2;
-        this.originY += this.vy * 0.2;
+        // Slowly change origin to simulate currents
+        this.originX += this.vx * driftFactor;
+        this.originY += this.vy * driftFactor;
 
         // Wrap around screen
         if (this.originX < 0) {
@@ -134,21 +148,19 @@
         this.y += (targetY - this.y) * returnSpeed;
 
         // 3. Bounce Effect (Decay impulse)
-        this.x += this.vx_impulse;
-        this.y += this.vy_impulse;
+        this.x += this.vxImpulse;
+        this.y += this.vyImpulse;
 
         // Using friction variable
-        this.vx_impulse *= friction;
-        this.vy_impulse *= friction;
+        this.vxImpulse *= friction;
+        this.vyImpulse *= friction;
       }
 
       draw() {
-        if (ctx) {
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fillStyle = this.color;
-          ctx.fill();
-        }
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
       }
 
       bounce() {
@@ -163,63 +175,59 @@
           // Closer particles get pushed harder
           const force = (clickEffectRadius - dist) / clickEffectRadius;
 
-          // Reduced power for subtle effect (was 25 + random*10)
-          const power = 5 + Math.random() * 5;
+          // Power for subtle bounce effect
+          const power = bouncePowerBase + Math.random() * bouncePowerRange;
 
-          this.vx_impulse = Math.cos(angle) * power * force;
-          this.vy_impulse = Math.sin(angle) * power * force;
+          this.vxImpulse = Math.cos(angle) * power * force;
+          this.vyImpulse = Math.sin(angle) * power * force;
         }
       }
     }
 
     function init() {
-      if (canvas) {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
 
-        particles = [];
-        for (let i = 0; i < particleCount; i++) {
-          particles.push(new Particle());
-        }
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
       }
     }
 
     function animate() {
-      if (ctx) {
-        ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, width, height);
 
-        // Draw connections first (so they are behind particles)
-        ctx.lineWidth = 0.5;
-        for (let i = 0; i < particles.length; i++) {
-          const p1 = particles[i];
-          p1.update();
+      // Draw connections first (so they are behind particles)
+      ctx.lineWidth = connectionLineWidth;
+      for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        p1.update();
 
-          // Connect particles if close
-          for (let j = i + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dx = p1.x - p2.x;
-            const dy = p1.y - p2.y;
-            const distanceSq = dx * dx + dy * dy;
+        // Connect particles if close
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const distanceSq = dx * dx + dy * dy;
 
-            if (distanceSq < connectionDistance * connectionDistance) {
-              const distance = Math.sqrt(distanceSq);
-              // Opacity based on distance
-              const opacity = 1 - distance / connectionDistance;
-              ctx.strokeStyle = `rgba(from ${colorInteractive} r g b / ${opacity * 0.2})`;
-              ctx.beginPath();
-              ctx.moveTo(p1.x, p1.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.stroke();
-            }
+          if (distanceSq < connectionDistance * connectionDistance) {
+            const distance = Math.sqrt(distanceSq);
+            // Opacity based on distance
+            const opacity = 1 - distance / connectionDistance;
+            ctx.strokeStyle = `rgba(from ${colorInteractive} r g b / ${opacity * connectionOpacityFactor})`;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
           }
-
-          p1.draw();
         }
 
-        requestAnimationFrame(animate);
+        p1.draw();
       }
+
+      requestAnimationFrame(animate);
     }
 
     // Event Listeners
