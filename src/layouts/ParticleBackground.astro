@@ -1,4 +1,8 @@
-<canvas id="canvas"></canvas>
+---
+// Source: https://gemini.google.com/share/d5e0572097f7
+---
+
+<canvas id="canvas" transition:persist="particle-canvas"></canvas>
 
 <slot />
 
@@ -16,6 +20,12 @@
     const canvasElement = document.getElementById(
       "canvas",
     ) as HTMLCanvasElement | null;
+
+    // Guard: if already initialized, exit early (canvas persisted from previous page)
+    if (canvasElement?.dataset.initialized === "true") {
+      return;
+    }
+
     const context = canvasElement?.getContext("2d");
 
     // Early exit if canvas or context is not available
@@ -293,20 +303,11 @@
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
 
-    document.addEventListener(
-      "astro:before-page-load",
-      () => {
-        window.removeEventListener("resize", handleResize);
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("touchmove", handleTouchMove);
-        window.removeEventListener("mousedown", handleMouseDown);
-        window.removeEventListener("mouseup", handleMouseUp);
-      },
-      { once: true },
-    );
-
     // Initialize and start
     init();
     animate();
+
+    // Mark canvas as initialized to prevent re-initialization on navigation
+    canvas.dataset.initialized = "true";
   })();
 </script>
