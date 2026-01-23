@@ -61,7 +61,7 @@ const description =
 
                   <div class={data.image && "glass3d"}>
                     <header>
-                      <h1>{data.title}</h1>
+                      <h1 transition:name={`post-title-${id}`}>{data.title}</h1>
                     </header>
 
                     <p>{data.summary}</p>

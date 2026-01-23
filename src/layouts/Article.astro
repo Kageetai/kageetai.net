@@ -6,9 +6,10 @@ interface Props {
   title: string;
   summary?: string;
   published: Date;
+  id: string;
 }
 
-const { title, summary, published } = Astro.props;
+const { title, summary, published, id } = Astro.props;
 ---
 
 <BaseLayout title={title} description={summary}>
@@ -18,7 +19,7 @@ const { title, summary, published } = Astro.props;
 
   <article>
     <header>
-      <h1>{title}</h1>
+      <h1 transition:name={`post-title-${id}`}>{title}</h1>
 
       <aside class="meta">
         <ul>
