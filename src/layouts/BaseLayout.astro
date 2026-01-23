@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import "../styles/glass3d.css";
 import ParticleBackground from "./ParticleBackground.astro";
 
@@ -14,6 +15,7 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <ClientRouter />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
