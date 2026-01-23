@@ -32,7 +32,7 @@ jobs:
         run: pnpm run build
 
       - name: Deploy using Rsync
-        uses: burnett01/rsync-deployments@7.1.0
+        uses: burnett01/rsync-deployments@8.0.2
         with:
           switches: -avrh --delete
           path: dist/
