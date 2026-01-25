@@ -1,7 +1,7 @@
 ---
 created: 2025-11-07T09:28+01:00
 changed: 2025-12-10T14:25+01:00
-image: "[Astro-based web page](attachmentsnew-blog-new-stack-1763042571840.webp)"
+image: "[Astro-based web page](./attachments/new-blog,-new-stack-1763042571840.webp)"
 publish: true
 published: 2025-12-02
 summary: What's the cliché first post on a fresh blog for a developer? Of course, the tech stack behind the blog!
@@ -28,7 +28,7 @@ After that I also have to deploy the build files somewhere, for which it makes m
   
 This is how the page looked after the above process:  
   
-![Quartz-based web page](attachmentsnew-blog-new-stack-1763475494080.webp)  
+![Quartz-based web page](./attachments/new-blog,-new-stack-1763475494080.webp)  
   
 Certainly not bad for a basic setup and being able to publish Obsidian notes relatively easily.  
 I did keep this for a while, but always with the desire to only use it as a base and at some point replace it.  
@@ -56,7 +56,7 @@ The main part of that happens inside the standard Astro configuration, where I a
   
 With that done, working on the actual design and CSS for the site was the easy part and I soon had the below design for the home page:  
   
-![Astro-based web page](attachmentsnew-blog-new-stack-1763042571840.webp)  
+![Astro-based web page](./attachments/new-blog,-new-stack-1763042571840.webp)  
   
 For more details about that, I recommend just checking the source code and history on [GitHub](https://github.com/Kageetai/kageetai.net/commits/main/). I will surely work on it more, try to find my own style and design etc. For now I want to keep it simple, but have plans for more proper "blog features" and such, e.g.:  
   
@@ -72,7 +72,7 @@ For more details about that, I recommend just checking the source code and histo
 After that I published the site on my Uberspace web host just like before.  
 After some testing and tweaking with Google Lighthouse, I managed to get a `100` score:  
   
-![Lighthouse score](attachmentsnew-blog-new-stack-1762525428937.webp)  
+![Lighthouse score](./attachments/new-blog,-new-stack-1762525428937.webp)  
   
 I suppose it's okay to be just a little proud of that. Let's see how long it lasts! ;)  
 In the meantime, feel free to [contact me](https://mastodon.social/@kageetai) with suggestions, share your own blog setups or anything.  
