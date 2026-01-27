@@ -45,16 +45,6 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
         s.parentNode?.insertBefore(g, s);
       })();
     </script>
-    <noscript
-      ><p>
-        <img
-          referrerpolicy="no-referrer-when-downgrade"
-          src="https://matomo.kageetai.net/matomo.php?idsite=1&rec=1"
-          style="border:0;"
-          alt=""
-        />
-      </p></noscript
-    >
     <!-- End Matomo Code -->
   </head>
   <body>
@@ -66,6 +56,16 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
         <footer>© Kageetai.net {new Date().getFullYear()}</footer>
       </div>
     </ParticleBackground>
+
+    <!-- Matomo noscript fallback -->
+    <noscript>
+      <img
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://matomo.kageetai.net/matomo.php?idsite=1&rec=1"
+        style="border:0; position:absolute; left:-9999px;"
+        alt=""
+      />
+    </noscript>
   </body>
 </html>
 
