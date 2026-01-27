@@ -16,82 +16,52 @@ const { title, summary, published, id, image } = Astro.props;
 ---
 
 <BaseLayout title={title} description={summary}>
-  {image && (
-    <header class="banner-header" slot="banner">
-      <div class="banner">
-        <Image
-          src={image}
-          alt={`Banner image for ${title}`}
-          width={1200}
-          transition:name={`post-image-${id}`}
-        />
-        <div class="gradient-overlay"></div>
-      </div>
+  <div slot="banner" class={image ? "banner-section" : "nav-only"}>
+    <nav>
+      <a href="/">← Kageetai.net</a>
+    </nav>
 
-      <div class="header-content">
-        <nav>
-          <a href="/">← Kageetai.net</a>
-        </nav>
+    {
+      image && (
+        <div class="banner">
+          <Image
+            src={image}
+            alt={`Banner image for ${title}`}
+            width={1200}
+            transition:name={`post-image-${id}`}
+          />
+          <div class="gradient-overlay" />
+        </div>
+      )
+    }
+  </div>
 
-        <h1 transition:name={`post-title-${id}`}>{title}</h1>
+  <article>
+    <header class={image && "has-banner"}>
+      <h1 transition:name={`post-title-${id}`}>{title}</h1>
 
-        <aside class="meta">
-          <ul>
-            <li>
-              <Calendar size={18} stroke-width={1} />
+      <aside class="meta">
+        <ul>
+          <li>
+            <Calendar size={18} stroke-width={1} />
 
-              <time datetime={published.toISOString()}>
-                {published.toLocaleDateString()}
-              </time>
-            </li>
+            <time datetime={published.toISOString()}>
+              {published.toLocaleDateString()}
+            </time>
+          </li>
 
-            {
-              summary && (
-                <li>
-                  <FileText size={18} stroke-width={1} />
+          {
+            summary && (
+              <li>
+                <FileText size={18} stroke-width={1} />
 
-                  {summary}
-                </li>
-              )
-            }
-          </ul>
-        </aside>
-      </div>
+                {summary}
+              </li>
+            )
+          }
+        </ul>
+      </aside>
     </header>
-  )}
-
-  <article class={image && "has-banner"}>
-    {!image && (
-      <header>
-        <nav>
-          <a href="/">← Kageetai.net</a>
-        </nav>
-
-        <h1 transition:name={`post-title-${id}`}>{title}</h1>
-
-        <aside class="meta">
-          <ul>
-            <li>
-              <Calendar size={18} stroke-width={1} />
-
-              <time datetime={published.toISOString()}>
-                {published.toLocaleDateString()}
-              </time>
-            </li>
-
-            {
-              summary && (
-                <li>
-                  <FileText size={18} stroke-width={1} />
-
-                  {summary}
-                </li>
-              )
-            }
-          </ul>
-        </aside>
-      </header>
-    )}
 
     <main>
       <slot />
@@ -100,12 +70,36 @@ const { title, summary, published, id, image } = Astro.props;
 </BaseLayout>
 
 <style>
-  .banner-header {
+  /* Banner section with image */
+  .banner-section {
     position: relative;
-    min-height: 450px;
+    min-height: 350px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+
+    /* --breakpoint-sm */
+    @media (min-width: 600px) {
+      min-height: 500px;
+    }
+  }
+
+  .banner-section nav {
+    position: relative;
+    z-index: 1;
+    max-width: 80ch;
+    margin: 0 auto;
+    padding: 2rem 2rem 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Nav-only section without image */
+  .nav-only {
+    max-width: 80ch;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .banner {
@@ -141,26 +135,22 @@ const { title, summary, published, id, image } = Astro.props;
     pointer-events: none;
   }
 
-  .header-content {
-    position: relative;
-    z-index: 1;
-    max-width: 80ch;
-    margin: 0 auto;
-    padding: 2rem;
-    width: 100%;
-    box-sizing: border-box;
+  article header h1 {
+    margin-top: 0;
   }
 
   aside {
     ul {
       display: flex;
+      flex-direction: column;
       gap: 1rem;
       list-style: none;
       margin: 0;
       padding: 0;
 
-      @media (max-width: 600px) { /* --breakpoint-sm */
-        flex-direction: column;
+      /* --breakpoint-sm */
+      @media (min-width: 600px) {
+        flex-direction: row;
       }
 
       > li {
