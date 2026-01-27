@@ -30,7 +30,6 @@ const { title, summary, published, id, image } = Astro.props;
             width={1200}
             transition:name={`post-image-${id}`}
           />
-          <div class="gradient-overlay" />
         </div>
       )
     }
@@ -118,21 +117,7 @@ const { title, summary, published, id, image } = Astro.props;
     object-position: center;
     display: block;
     filter: blur(5px) brightness(0.7) grayscale(0.25);
-  }
-
-  .gradient-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background: linear-gradient(
-      to top,
-      var(--color-background) 0%,
-      rgba(from var(--color-background) r g b / 0.8) 40%,
-      rgba(from var(--color-background) r g b / 0) 100%
-    );
-    pointer-events: none;
+    mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 100%);
   }
 
   article header h1 {
