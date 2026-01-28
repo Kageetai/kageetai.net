@@ -16,11 +16,10 @@ const { title, summary, published, id, image } = Astro.props;
 ---
 
 <BaseLayout title={title} description={summary}>
-  <nav>
-    <a href="/">← Kageetai.net</a>
-  </nav>
-
   <div slot="banner" class={image ? "banner-section" : "nav-only"}>
+    <nav>
+      <a href="/">← Kageetai.net</a>
+    </nav>
     {
       image && (
         <div class="banner">
@@ -69,6 +68,14 @@ const { title, summary, published, id, image } = Astro.props;
 </BaseLayout>
 
 <style>
+  /* Banner image effect variables */
+  :root {
+    --banner-blur: 5px;
+    --banner-brightness: 0.7;
+    --banner-grayscale: 0.25;
+    --banner-mask-start: 30%;
+  }
+
   /* Banner section with image */
   .banner-section {
     position: relative;
@@ -82,23 +89,24 @@ const { title, summary, published, id, image } = Astro.props;
     }
   }
 
-  .banner-section nav {
-    position: relative;
-    z-index: 1;
+  /* Shared nav styles */
+  .banner-section nav,
+  .nav-only nav {
     max-width: 80ch;
     margin: 0 auto;
-    padding: 2rem 2rem 0;
     width: 100%;
     box-sizing: border-box;
   }
 
+  .banner-section nav {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 2rem 0;
+  }
+
   /* Nav-only section without image */
-  .nav-only {
-    max-width: 80ch;
-    margin: 0 auto;
+  .nav-only nav {
     padding: 1.5rem 2rem;
-    width: 100%;
-    box-sizing: border-box;
   }
 
   .banner {
@@ -116,11 +124,12 @@ const { title, summary, published, id, image } = Astro.props;
     object-fit: cover;
     object-position: center;
     display: block;
-    filter: blur(5px) brightness(0.7) grayscale(0.25);
+    filter: blur(var(--banner-blur)) brightness(var(--banner-brightness))
+      grayscale(var(--banner-grayscale));
     mask-image: linear-gradient(
       to bottom,
       black 0%,
-      black 30%,
+      black var(--banner-mask-start),
       transparent 100%
     );
   }
