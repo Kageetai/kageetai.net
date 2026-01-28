@@ -46,7 +46,8 @@
     // Get computed color by applying CSS variable to a temp element
     // This resolves light-dark() and other CSS functions to actual color values
     const tempEl = document.createElement("div");
-    tempEl.style.color = "var(--color-interactive)";
+    tempEl.style.cssText =
+      "position:absolute; visibility:hidden; color:var(--color-interactive)";
     document.body.appendChild(tempEl);
     const colorInteractive = window.getComputedStyle(tempEl).color;
     tempEl.remove();
