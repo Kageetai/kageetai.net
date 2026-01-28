@@ -1,15 +1,18 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 import { Calendar, FileText } from "@lucide/astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 
 interface Props {
   title: string;
   summary?: string;
   published: Date;
   id: string;
+  image?: ImageMetadata;
 }
 
-const { title, summary, published, id } = Astro.props;
+const { title, summary, published, id, image } = Astro.props;
 ---
 
 <BaseLayout title={title} description={summary}>
@@ -17,8 +20,23 @@ const { title, summary, published, id } = Astro.props;
     <a href="/">← Kageetai.net</a>
   </nav>
 
+  <div slot="banner" class={image ? "banner-section" : "nav-only"}>
+    {
+      image && (
+        <div class="banner">
+          <Image
+            src={image}
+            alt={`Banner image for ${title}`}
+            width={1200}
+            transition:name={`post-image-${id}`}
+          />
+        </div>
+      )
+    }
+  </div>
+
   <article>
-    <header>
+    <header class={image && "has-banner"}>
       <h1 transition:name={`post-title-${id}`}>{title}</h1>
 
       <aside class="meta">
@@ -51,23 +69,80 @@ const { title, summary, published, id } = Astro.props;
 </BaseLayout>
 
 <style>
+  /* Banner image effect variables */
+  :root {
+    --banner-blur: 5px;
+    --banner-brightness: 0.7;
+    --banner-grayscale: 0.25;
+    --banner-mask-start: 30%;
+  }
+
+  /* Banner section with image */
+  .banner-section {
+    position: relative;
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+
+    /* --breakpoint-sm */
+    @media (min-width: 600px) {
+      min-height: 500px;
+    }
+  }
+
+  .banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+
+  .banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    filter: blur(var(--banner-blur)) brightness(var(--banner-brightness))
+      grayscale(var(--banner-grayscale));
+    mask-image: linear-gradient(
+      to bottom,
+      black 0%,
+      black var(--banner-mask-start),
+      transparent 100%
+    );
+  }
+
+  article header h1 {
+    margin-top: 0;
+  }
+
   aside {
     ul {
       display: flex;
+      flex-direction: column;
       gap: 1rem;
       list-style: none;
       margin: 0;
       padding: 0;
 
+      /* --breakpoint-sm */
+      @media (min-width: 600px) {
+        flex-direction: row;
+      }
+
       > li {
         display: flex;
+        justify-content: flex-start;
         gap: 0.5rem;
         padding: 0.25rem 0.5rem;
         border: 1px solid var(--color-border);
         border-radius: var(--radius);
 
         > * {
-          flex: 1 0 auto;
+          flex: 0 0 auto;
         }
 
         > *:first-child {

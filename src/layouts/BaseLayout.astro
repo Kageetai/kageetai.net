@@ -45,26 +45,27 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
         s.parentNode?.insertBefore(g, s);
       })();
     </script>
-    <noscript
-      ><p>
-        <img
-          referrerpolicy="no-referrer-when-downgrade"
-          src="https://matomo.kageetai.net/matomo.php?idsite=1&rec=1"
-          style="border:0;"
-          alt=""
-        />
-      </p></noscript
-    >
     <!-- End Matomo Code -->
   </head>
   <body>
     <ParticleBackground>
+      <slot name="banner" />
       <div class="container">
         <slot />
 
         <footer>© Kageetai.net {new Date().getFullYear()}</footer>
       </div>
     </ParticleBackground>
+
+    <!-- Matomo noscript fallback -->
+    <noscript>
+      <img
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://matomo.kageetai.net/matomo.php?idsite=1&rec=1"
+        style="border:0; position:absolute; left:-9999px;"
+        alt=""
+      />
+    </noscript>
   </body>
 </html>
 
@@ -76,6 +77,8 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
     --color-interactive: light-dark(#275c4e, #a5e4d1);
     --color-border: rgba(from var(--color-interactive) r g b / 0.5);
     --radius: 0.5rem;
+    /* Breakpoints (for reference - can't use in media queries directly) */
+    --breakpoint-sm: 600px;
   }
 
   * {
@@ -111,6 +114,12 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
     color: var(--color-foreground);
   }
 
+  .banner-section + .container {
+    margin-top: -10rem;
+    border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius);
+  }
+
   img {
     max-width: 100%;
     height: auto;
@@ -139,5 +148,6 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
 
   footer {
     font-size: 0.8rem;
+    color: darkgray;
   }
 </style>

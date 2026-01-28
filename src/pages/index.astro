@@ -56,7 +56,12 @@ const description =
               <a href={id}>
                 <article>
                   {data.image && (
-                    <Image src={data.image} alt={data.title} width={500} />
+                    <Image
+                      src={data.image}
+                      alt={data.title}
+                      width={500}
+                      transition:name={`post-image-${id}`}
+                    />
                   )}
 
                   <div class={data.image && "glass3d"}>
