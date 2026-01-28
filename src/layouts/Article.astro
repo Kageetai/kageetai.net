@@ -69,16 +69,12 @@ const { title, summary, published, id, image } = Astro.props;
 </BaseLayout>
 
 <style>
-  /* Banner image effect variables */
-  :root {
+  /* Banner section with image */
+  .banner-section {
     --banner-blur: 7px;
     --banner-brightness: 0.7;
     --banner-grayscale: 0.25;
     --banner-mask-start: 30%;
-  }
-
-  /* Banner section with image */
-  .banner-section {
     position: relative;
     min-height: 350px;
     display: flex;
