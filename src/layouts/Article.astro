@@ -2,7 +2,7 @@
 import BaseLayout from "./BaseLayout.astro";
 import { Calendar, FileText } from "@lucide/astro";
 import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro:assets";
+import type { ImageMetadata } from "astro";
 
 interface Props {
   title: string;
@@ -117,7 +117,12 @@ const { title, summary, published, id, image } = Astro.props;
     object-position: center;
     display: block;
     filter: blur(5px) brightness(0.7) grayscale(0.25);
-    mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 100%);
+    mask-image: linear-gradient(
+      to bottom,
+      black 0%,
+      black 30%,
+      transparent 100%
+    );
   }
 
   article header h1 {
