@@ -51,7 +51,7 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
   <body>
     <ParticleBackground>
       <slot name="banner" />
-      <div class="container">
+      <div class="container glass3d">
         <slot />
 
         <footer>
@@ -114,8 +114,6 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
     max-width: 80ch;
     margin: 0 auto;
     padding: 2rem;
-    background-color: var(--color-background);
-    backdrop-filter: blur(5px);
     color: var(--color-foreground);
   }
 
