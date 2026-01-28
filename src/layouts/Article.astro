@@ -16,10 +16,11 @@ const { title, summary, published, id, image } = Astro.props;
 ---
 
 <BaseLayout title={title} description={summary}>
+  <nav>
+    <a href="/">← Kageetai.net</a>
+  </nav>
+
   <div slot="banner" class={image ? "banner-section" : "nav-only"}>
-    <nav>
-      <a href="/">← Kageetai.net</a>
-    </nav>
     {
       image && (
         <div class="banner">
@@ -87,26 +88,6 @@ const { title, summary, published, id, image } = Astro.props;
     @media (min-width: 600px) {
       min-height: 500px;
     }
-  }
-
-  /* Shared nav styles */
-  .banner-section nav,
-  .nav-only nav {
-    max-width: 80ch;
-    margin: 0 auto;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .banner-section nav {
-    position: relative;
-    z-index: 1;
-    padding: 2rem 2rem 0;
-  }
-
-  /* Nav-only section without image */
-  .nav-only nav {
-    padding: 1.5rem 2rem;
   }
 
   .banner {
