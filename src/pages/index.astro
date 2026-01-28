@@ -122,13 +122,6 @@ const description =
       padding: 0 1rem 1rem 1rem;
     }
 
-    &:hover {
-      img {
-        transform: scale(1.05);
-        transition: transform 0.5s ease-in-out;
-      }
-    }
-
     img {
       position: absolute;
       top: 0;
@@ -137,8 +130,17 @@ const description =
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.5s ease-in-out;
       margin-bottom: auto;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      img {
+        transition: transform 0.5s ease-in-out;
+      }
+
+      &:hover img {
+        transform: scale(1.05);
+      }
     }
 
     h1 {

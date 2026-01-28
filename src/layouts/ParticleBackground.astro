@@ -34,21 +34,23 @@
       return;
     }
 
-    // Respect user's motion preferences for accessibility
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
-
     // Type assertion: we've confirmed these are non-null
     const canvas = canvasElement as HTMLCanvasElement;
     const ctx = context as CanvasRenderingContext2D;
 
-    // get custom property
-    const element = document.documentElement;
-    const style = window.getComputedStyle(element);
-    const colorInteractive = style
-      .getPropertyValue("--color-interactive")
-      .trim();
+    // Check user's motion preferences for accessibility
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    // Get computed color by applying CSS variable to a temp element
+    // This resolves light-dark() and other CSS functions to actual color values
+    const tempEl = document.createElement("div");
+    tempEl.style.cssText =
+      "position:absolute; visibility:hidden; color:var(--color-interactive)";
+    document.body.appendChild(tempEl);
+    const colorInteractive = window.getComputedStyle(tempEl).color;
+    tempEl.remove();
 
     let width: number, height: number;
     const particles: Particle[] = [];
@@ -246,13 +248,7 @@
       });
     }
 
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-
-      // 1. Update all particles
-      particles.forEach((p) => p.update());
-
-      // 2. Draw connections
+    function drawConnections() {
       ctx.lineWidth = connectionLineWidth;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -273,6 +269,22 @@
           }
         }
       }
+    }
+
+    function drawStatic() {
+      ctx.clearRect(0, 0, width, height);
+      drawConnections();
+      particles.forEach((p) => p.draw());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      // 1. Update all particles
+      particles.forEach((p) => p.update());
+
+      // 2. Draw connections
+      drawConnections();
 
       // 3. Draw particles
       particles.forEach((p) => p.draw());
@@ -298,15 +310,21 @@
       mouse.isDown = false;
     };
 
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("touchmove", handleTouchMove);
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
-
-    // Initialize and start
+    // Initialize particles
     init();
-    animate();
+
+    if (prefersReducedMotion) {
+      // Static render: draw once, no animation or interaction
+      drawStatic();
+    } else {
+      // Full animation with event listeners
+      window.addEventListener("resize", handleResize);
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("touchmove", handleTouchMove);
+      window.addEventListener("mousedown", handleMouseDown);
+      window.addEventListener("mouseup", handleMouseUp);
+      animate();
+    }
 
     // Mark canvas as initialized to prevent re-initialization on navigation
     canvas.dataset.initialized = "true";
