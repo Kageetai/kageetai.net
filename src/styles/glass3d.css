@@ -2,7 +2,7 @@
 
 .glass3d {
   --filter-glass3d: blur(32px) brightness(0.85) saturate(2.5);
-  --color-glass3d: hsl(150 80% 10% / 0.2);
+  --color-glass3d: hsl(150 80% 5% / 0.2);
   --noise-glass3d: none;
 
   position: relative;
