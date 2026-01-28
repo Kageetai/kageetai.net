@@ -6,13 +6,14 @@ import ParticleBackground from "./ParticleBackground.astro";
 interface Props {
   title?: string;
   description?: string;
+  lang?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, lang = "en" } = Astro.props;
 const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
 ---
 
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <ClientRouter />
@@ -53,7 +54,11 @@ const pageTitle = title ? `${title} | Kageetai.net` : "Kageetai.net";
       <div class="container">
         <slot />
 
-        <footer>© Kageetai.net {new Date().getFullYear()}</footer>
+        <footer>
+          © Kageetai.net {new Date().getFullYear()} ·
+          <a href="/impressum">Impressum</a> ·
+          <a href="/datenschutz">Datenschutz</a>
+        </footer>
       </div>
     </ParticleBackground>
 
