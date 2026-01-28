@@ -16,11 +16,11 @@ const { title, summary, published, id, image } = Astro.props;
 ---
 
 <BaseLayout title={title} description={summary}>
-  <div slot="banner" class={image ? "banner-section" : "nav-only"}>
-    <nav>
-      <a href="/">← Kageetai.net</a>
-    </nav>
+  <nav>
+    <a href="/">← Kageetai.net</a>
+  </nav>
 
+  <div slot="banner" class={image ? "banner-section" : "nav-only"}>
     {
       image && (
         <div class="banner">
