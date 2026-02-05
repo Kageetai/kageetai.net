@@ -148,4 +148,60 @@ const { title, summary, published, id, image } = Astro.props;
       }
     }
   }
+
+  /* Anchor link styles for article headings */
+  main :global(h1),
+  main :global(h2),
+  main :global(h3),
+  main :global(h4),
+  main :global(h5),
+  main :global(h6) {
+    scroll-margin-top: 5rem;
+  }
+
+  main :global(.anchor-link) {
+    margin-left: 0.5rem;
+    color: var(--color-interactive);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    vertical-align: middle;
+
+    /* Override external link arrow from global styles */
+    &::after {
+      content: none !important;
+    }
+
+    &:focus-visible {
+      opacity: 1;
+      outline: 2px solid var(--color-interactive);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+
+  /* Desktop: show on heading hover */
+  @media (hover: hover) {
+    main :global(h1:hover .anchor-link),
+    main :global(h2:hover .anchor-link),
+    main :global(h3:hover .anchor-link),
+    main :global(h4:hover .anchor-link),
+    main :global(h5:hover .anchor-link),
+    main :global(h6:hover .anchor-link) {
+      opacity: 1;
+    }
+  }
+
+  /* Touch devices: always visible at reduced opacity */
+  @media (hover: none) {
+    main :global(.anchor-link) {
+      opacity: 0.5;
+    }
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    main :global(.anchor-link) {
+      transition: none;
+    }
+  }
 </style>
