@@ -1,6 +1,6 @@
 ---
 created: 2026-02-09T17:18+01:00
-changed: 2026-02-17T14:45+01:00
+changed: 2026-02-17T14:49+01:00
 image: "[[TIL React PDF renderer-1771334310711.webp]]"
 publish: true
 published: 2026-02-17
@@ -124,21 +124,20 @@ Use the `fixed` prop for elements that should repeat:
   
 ```tsx  
 // route.tsx  
-import { renderToBuffer } from '@react-pdf/renderer';  
+import { renderToStream } from '@react-pdf/renderer';  
+import { type NextRequest, NextResponse } from 'next/server';  
   
 export async function GET(req: NextRequest) {  
-  const data = await fetchData();  
-  
-  // Generate PDF buffer  
-  const buffer = await renderToBuffer(<CandidateReport data={data} />);  
-  
-  // Return with download headers  
-  return new NextResponse(new Uint8Array(buffer), {  
-    headers: {  
-      'Content-Type': 'application/pdf',  
-      'Content-Disposition': `attachment; filename="Report.pdf"`  
-    }  
-  });  
+    const data = await fetchData();  
+    // Generate PDF stream for better performance and lower memory usage  
+    const stream = await renderToStream(<CandidateReport data={data}/>);  
+    // Return the stream with download headers  
+    return new NextResponse(stream, {  
+        headers: {  
+            'Content-Type': 'application/pdf',  
+            'Content-Disposition': `attachment; filename="Report.pdf"`,  
+        },  
+    });  
 }  
 ```  
   
@@ -188,7 +187,7 @@ Then in styles:
   
 ```tsx  
 page: {  
-  fontFamily: 'Inter',  // Reference the registered font  
+  fontFamily: 'Inter', // Reference the registered font  
   // ...  
 }  
 ```  
@@ -274,12 +273,12 @@ The visual difference between Inter and Helvetica is subtle enough that most sta
   
 ```tsx  
 // eslint-disable-next-line testing-library/render-result-naming-convention  
-const buffer = await renderToBuffer(<MyDoc />);  
+const stream = await renderToStream(<MyDoc/>);  
 ```  
   
-1. **No conditional `<Page>`**: All pages render. Use conditional content *within* pages instead.  
-2. **Text must be in `<Text>`**: Unlike HTML, raw strings outside `<Text>` will error.  
-3. **`gap` property**: Works in `flexDirection: 'row'`, but use `marginBottom` for vertical spacing.  
+2. **No conditional `<Page>`**: All pages render. Use conditional content *within* pages instead.  
+3. **Text must be in `<Text>`**: Unlike HTML, raw strings outside `<Text>` will error.  
+4. **`gap` property**: Works in `flexDirection: 'row'`, but use `marginBottom` for vertical spacing.  
   
 ## Summary  
   
