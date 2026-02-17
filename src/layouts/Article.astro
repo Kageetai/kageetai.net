@@ -41,7 +41,7 @@ const { title, summary, published, id, image } = Astro.props;
 
       <aside class="meta">
         <ul>
-          <li>
+          <li transition:name={`post-meta-${id}`}>
             <Calendar size={18} stroke-width={1} />
 
             <time datetime={published.toISOString()}>
@@ -51,7 +51,7 @@ const { title, summary, published, id, image } = Astro.props;
 
           {
             summary && (
-              <li>
+              <li transition:name={`post-summary-${id}`}>
                 <FileText size={18} stroke-width={1} />
 
                 {summary}

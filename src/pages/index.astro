@@ -65,24 +65,20 @@ const description =
                   )}
 
                   <div class={data.image && "glass3d"}>
-                    <header>
-                      <h1 transition:name={`post-title-${id}`}>{data.title}</h1>
-                    </header>
+                    <h1 transition:name={`post-title-${id}`}>{data.title}</h1>
 
-                    <p>{data.summary}</p>
+                    <p transition:name={`post-summary-${id}`}>{data.summary}</p>
 
-                    <aside>
-                      <small>
-                        <Calendar
-                          size={16}
-                          stroke-width={1}
-                          style="vertical-align: text-top"
-                        />
-                        <time datetime={data.published.toISOString()}>
-                          {formatter.format(data.published)}
-                        </time>
-                      </small>
-                    </aside>
+                    <small transition:name={`post-meta-${id}`}>
+                      <Calendar
+                        size={16}
+                        stroke-width={1}
+                        style="vertical-align: text-top"
+                      />
+                      <time datetime={data.published.toISOString()}>
+                        {formatter.format(data.published)}
+                      </time>
+                    </small>
                   </div>
                 </article>
               </a>
