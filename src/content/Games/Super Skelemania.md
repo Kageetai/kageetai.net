@@ -1,7 +1,7 @@
 ---
 created: 2025-10-15T10:10+02:00
 changed: 2025-11-06T17:12+01:00
-image: "[Super Skelemania-1760516813982.webp](./attachments/Super%20Skelemania-1760516813982.webp)"
+image: "[Super Skelemania-1760516813982.webp](./attachments/Super%20Skelemania-1760516813982.webp.webp)"
 played: 2025-10-14
 publish: true
 published: 2025-11-04
@@ -9,7 +9,7 @@ summary: Who doesn't love a nice palette cleanser in between bigger meals?
 url: https://store.steampowered.com/app/730920/Super_Skelemania/
 ---
   
-![Super Skelemania-1760516813982.webp](./attachments/Super%20Skelemania-1760516813982.webp)  
+![Super Skelemania-1760516813982.webp](./attachments/Super%20Skelemania-1760516813982.webp.webp)  
   
 I've been playing Games for most of my life, ever since I was a child. My parents might even say I spent more time on games than homework back then! Sadly, adult life has changed that; I now have less time and energy for extensive gaming sessions. While I still love unwinding with games after a long day, I often find myself lacking the time or energy for longer experiences. That's why it's so refreshing to discover a game that can be completed in about an hour.  
 Metroidvania games have always been my favorite genre, and they can vary wildly in length and complexity – from epic journeys like Hollow Knight: Silksong to more bite-sized experiences. Today, I want to talk about one of the latter: [**Super Skelemania**](https://store.steampowered.com/app/730920/Super_Skelemania/).  
