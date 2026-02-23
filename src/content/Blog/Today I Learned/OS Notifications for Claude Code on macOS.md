@@ -1,7 +1,7 @@
 ---
 created: 2026-02-23T12:39+01:00
 changed: 2026-02-23T15:02+01:00
-image: "[OS-Notifications-for-Claude-Code-on-macOS-1771848834188.webp](./attachments/OS-Notifications-for-Claude-Code-on-macOS-1771848834188.webp.webp)"
+image: "[OS-Notifications-for-Claude-Code-on-macOS-1771848834188.webp](../../../../Ls/rc/content/Blog/Today%20I%20Learned/attachments/OS-Notifications-for-Claude-Code-on-macOS-1771848834188.webp.webp)"
 publish: true
 published: 2026-02-23
 tags:
@@ -59,7 +59,7 @@ Add two hooks to `~/.claude/settings.json`:
   
 That's it. ~10 lines of JSON, no scripts, no daemons. And you get simple notifications whenever Claude is done with its current task:  
   
-![OS-Notifications-for-Claude-Code-on-macOS-1771848834188.webp](./attachments/OS-Notifications-for-Claude-Code-on-macOS-1771848834188.webp.webp)  
+![OS-Notifications-for-Claude-Code-on-macOS-1771848834188.webp](../../../../Ls/rc/content/Blog/Today%20I%20Learned/attachments/OS-Notifications-for-Claude-Code-on-macOS-1771848834188.webp.webp)  
   
 There are more details and options to configure these notifications.  
   
