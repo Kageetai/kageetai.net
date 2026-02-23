@@ -1,14 +1,14 @@
 ---
 created: 2026-02-23T12:39+01:00
-changed: 2026-02-23T13:26+01:00
-image: "[Claude Code alerts (yes,  Tahoe is ugly!)](./attachments/OS%20Notifications%20for%20Claude%20Code%20on%20macOS-1771848834188.webp.webp)"
+changed: 2026-02-23T13:29+01:00
+image: "[Claude Code alerts (yes, Tahoe is ugly!)](./attachments/OS%20Notifications%20for%20Claude%20Code%20on%20macOS-1771848834188.webp.webp)"
 publish: true
 published: 2026-02-23
 tags:
   - TodayILearned
 ---
   
-Coding with AI is basically the standard nowadays for many people. I also used it quite regularly in my job, specifically [Claude Code](https://code.claude.com/docs/en/overview). It's certainly very useful to take of care of boilerplate and repetitive code and other tasks; tell the AI to do the task, that would otherwise take you longer and be boring and let it work in the background (with proper security restraints of course), while I am getting a snack or so.  
+Coding with AI is basically the standard nowadays for many people. I also used it quite regularly in my job, specifically [Claude Code](https://code.claude.com/docs/en/overview). It's certainly very useful to take care of boilerplate and repetitive code and other tasks; tell the AI to do the task, that would otherwise take you longer and be boring and let it work in the background (with proper security restraints of course), while I am getting a snack or so.  
 There is just one problem with that: It's easy to forget time with your snack and forget to check when Claude is done or needs input from your side, resulting in it twiddling its imaginary thumbs not doing anything. And just like any good manager, I would never allow my employees a single free minute of not being productive.  
 Luckily there is a way to avoid that: **Terminal Notifications**!  
   
@@ -59,7 +59,7 @@ Add two hooks to `~/.claude/settings.json`:
   
 That's it. ~10 lines of JSON, no scripts, no daemons. And you get simple notifications whenever Claude is done with its current task:  
   
-![Claude Code alerts (yes,  Tahoe is ugly!)](./attachments/OS%20Notifications%20for%20Claude%20Code%20on%20macOS-1771848834188.webp.webp)  
+![Claude Code alerts (yes, Tahoe is ugly!)](./attachments/OS%20Notifications%20for%20Claude%20Code%20on%20macOS-1771848834188.webp.webp)  
   
 There are more details and options to configure these notifications.  
   
