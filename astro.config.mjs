@@ -29,6 +29,10 @@ export default defineConfig({
     ],
   },
 
+  image: {
+    remotePatterns: [{ protocol: "https" }],
+  },
+
   prefetch: {
     prefetchAll: true,
     defaultStrategy: "viewport",
