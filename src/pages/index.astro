@@ -57,7 +57,9 @@ const description =
                 <article>
                   {data.image && (
                     <Image
-                      src={data.image}
+                      {...(typeof data.image === "string"
+                        ? { src: data.image, inferSize: true }
+                        : { src: data.image })}
                       alt={data.title}
                       width={500}
                       transition:name={`post-image-${id}`}

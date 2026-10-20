@@ -179,7 +179,7 @@ One more idea I had after all this, whether it would be possible to transition b
 And with all this in place, we have achieved the following result:  
 You might have to open it directly on [CodePen](https://codepen.io/Kageetai/pen/dyEVZPv) to see the scrolling effect.  
   
-%% ![h:500px](https://codepen.io/Kageetai/pen/dyEVZPv) %%  
+<!-- ![h:500px](https://codepen.io/Kageetai/pen/dyEVZPv) -->
   
 <p class="codepen" data-height="300" data-default-tab="css,result" data-slug-hash="dyEVZPv" data-pen-title="scrolling gradient" data-preview="true" data-user="Kageetai" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">  
 	<span>See the Pen <a href="https://codepen.io/Kageetai/pen/dyEVZPv">  

@@ -9,7 +9,7 @@ interface Props {
   summary?: string;
   published: Date;
   id: string;
-  image?: ImageMetadata;
+  image?: ImageMetadata | string;
 }
 
 const { title, summary, published, id, image } = Astro.props;
@@ -24,8 +24,11 @@ const { title, summary, published, id, image } = Astro.props;
     {
       image && (
         <div class="banner">
+          {/* Remote URLs need dimension inference; local imports already have dimensions. Astro's types require separate prop shapes. */}
           <Image
-            src={image}
+            {...(typeof image === "string"
+              ? { src: image, inferSize: true }
+              : { src: image })}
             alt={`Banner image for ${title}`}
             width={1200}
             transition:name={`post-image-${id}`}
