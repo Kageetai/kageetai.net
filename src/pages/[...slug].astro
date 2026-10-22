@@ -1,16 +1,26 @@
 ---
 import { getCollection, render } from "astro:content";
 import Article from "../layouts/Article.astro";
+import { contentPath } from "../lib/content-path";
 
 export async function getStaticPaths() {
   const content = await getCollection("content");
-  return content.map((content) => ({
-    params: { slug: content.id },
-    props: { content },
-  }));
+  return content.flatMap((content) => {
+    const path = contentPath(content.id, content.data.published);
+    const page = {
+      params: { slug: path.slice(1) },
+      props: { content, redirect: undefined as string | undefined },
+    };
+    return [
+      page,
+      // Preserve existing links by redirecting the old content-ID URL to the dated URL.
+      { params: { slug: content.id }, props: { content, redirect: path } },
+    ];
+  });
 }
 
-const { content } = Astro.props;
+const { content, redirect } = Astro.props;
+if (redirect) return Astro.redirect(redirect, 301);
 const { Content } = await render(content);
 ---
 
