@@ -1,7 +1,7 @@
 ---
 created: 2025-09-01T22:32+02:00
 changed: 2025-11-06T17:12+01:00
-image: "[N64 box art](./attachments/Mystical%20Ninja%20Starring%20Goemon-1756799960028.webp)"
+image: "[Mystical Ninja Starring Goemon-1756799960028.webp](./attachments/Mystical%20Ninja%20Starring%20Goemon-1756799960028.webp)"
 played: 2025-09-21
 publish: true
 published: 2025-09-30
