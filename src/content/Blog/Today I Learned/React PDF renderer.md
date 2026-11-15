@@ -1,7 +1,7 @@
 ---
 created: 2026-02-09T17:18+01:00
 changed: 2026-02-17T14:49+01:00
-image: "[[TIL React PDF renderer-1771334310711.webp]]"
+image: "[TIL React PDF renderer-1771334310711.webp](./attachments/TIL%20React%20PDF%20renderer-1771334310711.webp)"
 publish: true
 published: 2026-02-17
 summary: "TIL: Generate Figma-perfect PDFs server-side in Next.js with `@react-pdf/renderer` – React components, ~2MB footprint, no headless browser bloat!"
