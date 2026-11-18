@@ -1,7 +1,7 @@
 ---
 created: 2026-10-14T10:51+02:00
-changed: 2026-10-20T12:08+02:00
-image: https://media.licdn.com/dms/image/v2/D5622AQGHTt1dxlTw3Q/feedshare-shrink_1280/B56ZkeeLLiIAAs-/0/1757152851522?e=1793836800&v=beta&t=Jo5dzwdVIzKKMxn55NiViPj_Pc9OrbBUg2I9sW2S0rs
+changed: 2026-11-18T11:48+01:00
+image: "[1757152851522_17S8qR.png](./attachments/1757152851522_17S8qR.png)"
 publish: true
 published: 2026-10-20
 summary: Keeping Git line endings consistent between macOS and Windows, without hundreds of changes to notes I didn't actually edit.
