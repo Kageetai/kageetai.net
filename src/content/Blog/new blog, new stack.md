@@ -1,7 +1,7 @@
 ---
 created: 2025-11-07T09:28+01:00
 changed: 2025-12-10T14:25+01:00
-image: "[Astro-based web page](./attachments/new%20blog,%20new%20stack-1763042571840.webp)"
+image: "[new blog, new stack-1763042571840.webp](./attachments/new%20blog,%20new%20stack-1763042571840.webp)"
 publish: true
 published: 2025-12-02
 summary: What's the cliché first post on a fresh blog for a developer? Of course, the tech stack behind the blog!
@@ -76,4 +76,3 @@ After some testing and tweaking with Google Lighthouse, I managed to get a `100`
   
 I suppose it's okay to be just a little proud of that. Let's see how long it lasts! ;)  
 In the meantime, feel free to [contact me](https://mastodon.social/@kageetai) with suggestions, share your own blog setups or anything.  
-  
