@@ -1,8 +1,9 @@
 ---
 created: 2026-11-19T10:13+01:00
-changed: 2026-11-19T11:04+01:00
+changed: 2026-11-19T11:43+01:00
 image: "[Open folders in WebStorm from Finder-1795080202735.webp](./attachments/Open%20folders%20in%20WebStorm%20from%20Finder-1795080202735.webp)"
 publish: true
+published: 2026-11-19
 summary: Adding a Finder Quick Action for WebStorm and remembering where macOS keeps the workflow.
 tags:
   - TodayILearned
